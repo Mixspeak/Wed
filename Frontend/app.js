@@ -1,9 +1,9 @@
 // Configuración de AWS (reemplaza con tus credenciales)
-AWS.config.update({
-  region: 'us-east-1',
-  accessKeyId: 'AKIAWXH3TVVY2QN7V7OZ',
-  secretAccessKey: '/jP+xxfmmZcMl9vmaCjnpTCHFIEwFOcP5N/vJWvZX59X'
-});
+//AWS.config.update({
+//  region: 'us-east-1',
+//  accessKeyId: '',
+//  secretAccessKey: ''
+//});
 
 // Widget de clima
 async function fetchWeather() {
