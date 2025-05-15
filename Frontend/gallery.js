@@ -1,9 +1,14 @@
 // Configuración de AWS (reemplaza con tus credenciales)
-const AWS_CONFIG = {
-  region: '__AWS_REGION__',
-  accessKeyId: '__AWS_ACCESS_KEY_ID__',
-  secretAccessKey: '__AWS_SECRET_ACCESS_KEY__'
-};
+//const AWS_CONFIG = {
+//  region: '__AWS_REGION__',
+//  accessKeyId: '__AWS_ACCESS_KEY_ID__',
+//  secretAccessKey: '__AWS_SECRET_ACCESS_KEY__'
+//};
+// Frontend/app.js
+AWS.config.region = 'us-east-1'; // Only region is needed in client code
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  IdentityPoolId: 'us-east-1:7e8675ae-dbc4-4685-8620-81f78ae7ac20'
+});
 
 const s3 = new AWS.S3();
 const bucketName = 'wed-fotos';
