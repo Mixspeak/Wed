@@ -5,6 +5,37 @@
 //  secretAccessKey: ''
 //});
 
+// In your app.js or auth.js
+// Configure Amplify
+const authConfig = {
+  region: 'us-east-1',
+  userPoolId: 'us-east-1_nSY2Zks8d',
+  userPoolWebClientId: '8087ck55rluaqvde5u2qt42b2',
+  identityPoolId: 'us-east-1:dd6c356c-7255-408a-9e13-6e6eafe75b41'
+};
+
+AWS.config.update({
+  region: 'us-east-1',
+  credentials: new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: authConfig.identityPoolId
+  })
+});
+
+// Initialize Amplify
+Amplify.configure({
+  Auth: authConfig
+});
+
+// Example usage
+async function signIn(username, password) {
+  try {
+    const user = await Amplify.Auth.signIn(username, password);
+    console.log('Signed in:', user);
+  } catch (error) {
+    console.error('Sign in error:', error);
+  }
+}
+
 // Widget de clima
 async function fetchWeather() {
   try {
