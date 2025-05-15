@@ -1,88 +1,296 @@
-/* Estilos generales */
+/* Fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+
+/* Estilos Generales */
 body {
   font-family: 'Montserrat', sans-serif;
-  background-color: #f8f9fa;
+  background-color: #FAFAF7;
+  color: #333333;
   margin: 0;
   padding: 0;
-  color: #333;
+  line-height: 1.6;
+  background-color: #e4e5db;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='18' viewBox='0 0 100 18'%3E%3Cpath fill='%23a8ac92' fill-opacity='0.4' d='M61.82 18c3.47-1.45 6.86-3.78 11.3-7.34C78 6.76 80.34 5.1 83.87 3.42 88.56 1.16 93.75 0 100 0v6.16C98.76 6.05 97.43 6 96 6c-9.59 0-14.23 2.23-23.13 9.34-1.28 1.03-2.39 1.9-3.4 2.66h-7.65zm-23.64 0H22.52c-1-.76-2.1-1.63-3.4-2.66C11.57 9.3 7.08 6.78 0 6.16V0c6.25 0 11.44 1.16 16.14 3.42 3.53 1.7 5.87 3.35 10.73 7.24 4.45 3.56 7.84 5.9 11.31 7.34zM61.82 0h7.66a39.57 39.57 0 0 1-7.34 4.58C57.44 6.84 52.25 8 46 8S34.56 6.84 29.86 4.58A39.57 39.57 0 0 1 22.52 0h15.66C41.65 1.44 45.21 2 50 2c4.8 0 8.35-.56 11.82-2z'%3E%3C/path%3E%3C/svg%3E");
 }
 
 .container {
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  background-color: #FFFFFF;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
+/* Header */
 header {
   text-align: center;
-  margin-bottom: 30px;
+  padding: 40px 20px;
+  background-color: #F5F5F0;
+  border-bottom: 1px solid #E8E8E3;
 }
 
 h1 {
-  color: #e63946;
-  font-size: 2.5rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  color: #333333;
+  margin: 0;
+  letter-spacing: 1px;
 }
 
 .subtitle {
   font-size: 1.2rem;
-  color: #6c757d;
+  color: #777;
+  margin-top: 10px;
+  font-weight: 300;
 }
 
-/* Tarjetas de detalles */
+/* Tarjetas de Detalles */
 .event-details {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 30px 0;
 }
 
 .detail-card {
-  background: #f1faee;
-  padding: 15px;
+  background: #FFFFFF;
+  padding: 25px;
   border-radius: 8px;
   text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  border: 1px solid #E8E8E3;
+  transition: transform 0.3s ease;
 }
 
-/* Widget de clima */
+.detail-card:hover {
+  transform: translateY(-5px);
+}
+
+.detail-card h2 {
+  font-family: 'Playfair Display', serif;
+  color: #D4AF37;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+/* Widget de Clima */
 .weather-widget {
-  background: #a8dadc;
-  padding: 15px;
+  background: #F5F5F0;
+  padding: 20px;
   border-radius: 8px;
-  margin-bottom: 30px;
+  margin: 30px 0;
   text-align: center;
+  border: 1px solid #E8E8E3;
+}
+
+.weather-widget h2 {
+  font-family: 'Playfair Display', serif;
+  color: #333333;
+  margin-bottom: 15px;
 }
 
 /* Botones */
 button {
-  background: #457b9d;
+  background: #D4AF37;
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 5px;
+  padding: 15px 30px;
+  border-radius: 30px;
   font-size: 1rem;
   cursor: pointer;
   width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  display: block;
   transition: background 0.3s;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 button:hover {
-  background: #1d3557;
+  background: #C19B2C;
+}
+
+/* Footer y Enlaces */
+footer {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  border-top: 1px solid #E8E8E3;
 }
 
 .gallery-link {
-  display: block;
-  text-align: center;
-  margin-top: 20px;
-  color: #457b9d;
+  color: #D4AF37;
   text-decoration: none;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 15px;
+  border-bottom: 1px solid transparent;
+  transition: border 0.3s;
+}
+
+.gallery-link:hover {
+  border-bottom: 1px solid #D4AF37;
 }
 
 /* Responsive */
-@media (max-width: 480px) {
-  .event-details {
-    grid-template-columns: 1fr;
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.2rem;
   }
+  .detail-card {
+    padding: 20px;
+  }
+}
+
+/* Estilos específicos para gallery.html */
+.gallery-header {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #F5F5F0;
+  border-bottom: 1px solid #E8E8E3;
+  margin-bottom: 30px;
+}
+
+.gallery-header h1 {
+  font-size: 2.5rem;
+}
+
+.upload-section {
+  background: #FFFFFF;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  margin-bottom: 40px;
+  border: 1px solid #E8E8E3;
+}
+
+.upload-box {
+  text-align: center;
+}
+
+#file-input {
+  display: none; /* Ocultamos el input file por defecto */
+}
+
+.file-info {
+  color: #777;
+  font-size: 0.9rem;
+  margin-top: 15px;
+}
+
+/* Grid de la galería */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin: 30px 0;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+  aspect-ratio: 1 / 1;
+  background: #F5F5F0;
+}
+
+.gallery-item:hover {
+  transform: scale(1.02);
+}
+
+.gallery-item img, 
+.gallery-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-item .file-type {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+/* Placeholder cuando no hay fotos */
+.gallery-placeholder {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 50px 20px;
+  color: #999;
+}
+
+.gallery-placeholder i {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #E8E8E3;
+}
+
+/* Estilos para iconos dorados */
+.icon-gold {
+  color: #D4AF37;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+/* Botones principales */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 30px 0;
+  align-items: center;
+}
+
+.gold-button {
+  background: #D4AF37;
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s;
+}
+
+.gold-button.outline {
+  background: transparent;
+  border: 2px solid #D4AF37;
+  color: #D4AF37;
+}
+
+.gold-button:hover {
+  background: #C19B2C;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+}
+
+.gold-button.outline:hover {
+  background: rgba(212, 175, 55, 0.1);
+}
+
+/* Texto destacado */
+.highlight {
+  color: #D4AF37;
+  font-weight: 600;
+}
+
+/* Enlaces de texto */
+.text-link {
+  color: #D4AF37;
+  text-decoration: none;
+  border-bottom: 1px dashed #D4AF37;
 }
