@@ -1,179 +1,134 @@
-// First verify AWS and Amplify are loaded
-if (typeof AWS === 'undefined' || typeof Amplify === 'undefined') {
-  console.error('AWS SDK or Amplify not loaded!');
-  document.body.innerHTML = `
-    <div style="color: red; padding: 20px;">
-      <h2>Loading Error</h2>
-      <p>Failed to load required resources. Please:</p>
-      <ol>
-        <li>Refresh the page</li>
-        <li>Check your internet connection</li>
-        <li>Try a different browser</li>
-      </ol>
-    </div>
-  `;
-} else {
-  // Configuration - REPLACE WITH YOUR ACTUAL VALUES
-  const config = {
+// Configuración de AWS (reemplaza con tus credenciales)
+const AWS_CONFIG = {
+  region: '###AWS_REGION###',
+  accessKeyId: '###AWS_ACCESS_KEY_ID###',
+  secretAccessKey: '###AWS_SECRET_ACCESS_KEY###'
+};
+
+// Inicialización condicional para desarrollo/producción
+if (AWS_CONFIG.accessKeyId.startsWith('###')) {
+  // Entorno de desarrollo (usar valores locales)
+  AWS.config.update({
     region: 'us-east-1',
-    userPoolId: 'us-east-1_nSY2Zks8d',
-    userPoolWebClientId: '8087ck55rluaqvde5u2qt42b2', // Get from Cognito Console
-    identityPoolId: 'us-east-1:dd6c356c-7255-408a-9e13-6e6eafe75b41'
-  };
-
-  // Initialize Amplify
-  try {
-    Amplify.configure({ Auth: config });
-    
-    // Initialize AWS Credentials
-    AWS.config.update({
-      region: config.region,
-      credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: config.identityPoolId,
-        Logins: {} // Empty for unauthenticated access
-      })
-    });
-
-    // Verify credentials
-    AWS.config.credentials.get(function(err) {
-      if (err) {
-        console.error("Error getting credentials:", err);
-        showError("Failed to initialize. Please refresh.");
-      } else {
-        console.log("Successfully initialized!");
-        // Your application code here
-      }
-    });
-  } catch (error) {
-    console.error("Initialization error:", error);
-    showError("Application error. Please try again later.");
-  }
+    accessKeyId: 'TU_ACCESS_KEY_LOCAL',  // Solo para desarrollo local
+    secretAccessKey: 'TU_SECRET_KEY_LOCAL' // Solo para desarrollo local
+  });
+} else {
+  // Entorno de producción (valores reemplazados por GitHub Actions)
+  AWS.config.update(AWS_CONFIG);
 }
 
-function showError(message) {
-  const errorDiv = document.createElement('div');
-  errorDiv.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: #ffebee;
-    color: #c62828;
-    padding: 15px;
-    text-align: center;
-    z-index: 1000;
-  `;
-  errorDiv.textContent = message;
-  document.body.prepend(errorDiv);
-}
+const s3 = new AWS.S3();
+const bucketName = 'wed-fotos';
 
-// DOM elements
+// Elementos del DOM
 const fileInput = document.getElementById('file-input');
 const uploadButton = document.getElementById('upload-button');
 const gallery = document.getElementById('gallery');
 
-// Initialize S3 client
-const s3 = new AWS.S3();
-const bucketName = 'wed-fotos';
-
-// First: Refresh AWS credentials
-AWS.config.credentials.get(function(err) {
-  if (err) {
-    console.error("Error getting credentials:", err);
-    showError("Error initializing gallery. Please refresh the page.");
-    return;
-  }
-  // Credentials loaded successfully
+// Cargar galería al iniciar
+document.addEventListener('DOMContentLoaded', () => {
   loadGallery();
 });
 
-// Load gallery function
+// Subir archivos a S3
+uploadButton.addEventListener('click', async () => {
+  const files = fileInput.files;
+  
+  if (files.length === 0) {
+    alert('Selecciona al menos un archivo');
+    return;
+  }
+
+  uploadButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo...';
+  uploadButton.disabled = true;
+
+  try {
+    for (let file of files) {
+      const fileType = file.type.split('/')[0]; // 'image' o 'video'
+      const params = {
+        Bucket: bucketName,
+        Key: `${Date.now()}-${file.name}`,
+        Body: file,
+        ContentType: file.type
+      };
+      await s3.upload(params).promise();
+    }
+    alert('¡Archivos subidos exitosamente!');
+    loadGallery();
+  } catch (error) {
+    console.error('Error al subir:', error);
+    alert('Error al subir archivos');
+  } finally {
+    uploadButton.innerHTML = '<i class="fas fa-paper-plane"></i> Subir';
+    uploadButton.disabled = false;
+    fileInput.value = '';
+  }
+});
+
+async function uploadFile(file) {
+  const params = {
+    Bucket: 'wed-fotos',
+    Key: `uploads/${Date.now()}-${file.name}`,
+    Body: file,
+    ContentType: file.type,
+    // Remove ACL if using Bucket Owner Enforced
+    // ACL: 'public-read' 
+  };
+
+  try {
+    const data = await s3.upload(params).promise();
+    console.log('Upload verified:', data.Location);
+    return true;
+  } catch (error) {
+    console.error('Real upload error:', error);
+    alert('Upload failed silently - check console');
+    return false;
+  }
+}
+
+// Cargar y mostrar archivos desde S3
 async function loadGallery() {
   try {
-    gallery.innerHTML = '<div class="loading">Loading gallery...</div>';
+    const params = { Bucket: bucketName };
+    const data = await s3.listObjectsV2(params).promise();
     
-    const data = await s3.listObjectsV2({ 
-      Bucket: bucketName,
-      Prefix: 'uploads/' // Only show files in uploads folder
-    }).promise();
-    
-    if (!data.Contents || data.Contents.length === 0) {
+    if (data.Contents.length === 0) {
       gallery.innerHTML = `
-        <div class="empty-gallery">
+        <div class="gallery-placeholder">
           <i class="fas fa-images"></i>
-          <p>No photos yet. Be the first to upload!</p>
+          <p>No hay fotos aún. ¡Sé el primero en compartir!</p>
         </div>
       `;
       return;
     }
 
-    gallery.innerHTML = data.Contents.map(item => {
+    gallery.innerHTML = '';
+    data.Contents.forEach(item => {
       const fileUrl = `https://${bucketName}.s3.amazonaws.com/${item.Key}`;
-      const isImage = item.Key.match(/\.(jpg|jpeg|png|gif)$/i);
+      const fileType = item.Key.split('.').pop().toLowerCase();
+      const isVideo = ['mp4', 'mov', 'avi'].includes(fileType);
       
-      return `
-        <div class="gallery-item">
-          ${isImage ? 
-            `<img src="${fileUrl}" alt="Gallery photo">` : 
-            `<video controls>
-              <source src="${fileUrl}" type="video/mp4">
-            </video>`
-          }
-          <span class="file-type">${isImage ? 'Photo' : 'Video'}</span>
-        </div>
-      `;
-    }).join('');
-
+      const galleryItem = document.createElement('div');
+      galleryItem.className = 'gallery-item';
+      
+      if (isVideo) {
+        galleryItem.innerHTML = `
+          <video controls>
+            <source src="${fileUrl}" type="video/mp4">
+          </video>
+          <span class="file-type">Video</span>
+        `;
+      } else {
+        galleryItem.innerHTML = `
+          <img src="${fileUrl}" alt="Foto del evento">
+          <span class="file-type">Foto</span>
+        `;
+      }
+      
+      gallery.appendChild(galleryItem);
+    });
   } catch (error) {
-    console.error("Gallery load error:", error);
-    showError("Error loading gallery. Please try again later.");
+    console.error('Error al cargar galería:', error);
   }
 }
-
-// Upload function
-uploadButton.addEventListener('click', async () => {
-  const files = fileInput.files;
-  if (files.length === 0) {
-    alert('Please select at least one file');
-    return;
-  }
-
-  uploadButton.disabled = true;
-  uploadButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
-
-  try {
-    for (let file of files) {
-      const fileName = `uploads/${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
-      await s3.upload({
-        Bucket: bucketName,
-        Key: fileName,
-        Body: file,
-        ContentType: file.type
-      }).promise();
-    }
-    alert('Files uploaded successfully!');
-    loadGallery();
-  } catch (error) {
-    console.error("Upload error:", error);
-    alert('Error uploading files. Please check console for details.');
-  } finally {
-    uploadButton.disabled = false;
-    uploadButton.innerHTML = '<i class="fas fa-paper-plane"></i> Upload';
-    fileInput.value = '';
-  }
-});
-
-// Helper function to show errors
-function showError(message) {
-  gallery.innerHTML = `
-    <div class="error">
-      <i class="fas fa-exclamation-triangle"></i>
-      <p>${message}</p>
-    </div>
-  `;
-}
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-  // Additional initialization if needed
-});
