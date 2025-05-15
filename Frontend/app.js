@@ -1,22 +1,9 @@
 // Configuración de AWS (reemplaza con tus credenciales)
 const AWS_CONFIG = {
-  region: '###AWS_REGION###',
-  accessKeyId: '###AWS_ACCESS_KEY_ID###',
-  secretAccessKey: '###AWS_SECRET_ACCESS_KEY###'
+  region: '__AWS_REGION__',
+  accessKeyId: '__AWS_ACCESS_KEY_ID__',
+  secretAccessKey: '__AWS_SECRET_ACCESS_KEY__'
 };
-
-// Inicialización condicional para desarrollo/producción
-if (AWS_CONFIG.accessKeyId.startsWith('###')) {
-  // Entorno de desarrollo (usar valores locales)
-  AWS.config.update({
-    region: 'us-east-1',
-    accessKeyId: 'TU_ACCESS_KEY_LOCAL',  // Solo para desarrollo local
-    secretAccessKey: 'TU_SECRET_KEY_LOCAL' // Solo para desarrollo local
-  });
-} else {
-  // Entorno de producción (valores reemplazados por GitHub Actions)
-  AWS.config.update(AWS_CONFIG);
-}
 
 // Widget de clima
 async function fetchWeather() {
