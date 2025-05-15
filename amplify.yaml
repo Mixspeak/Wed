@@ -1,0 +1,10 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm install
+  artifacts:
+    baseDirectory: /frontend
+    files:
+      - '**/*'
