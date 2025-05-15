@@ -8,17 +8,18 @@ AWS.config.update({
 // Widget de clima
 async function fetchWeather() {
   try {
-    const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q=Ciudad de México&appid=TU_API_KEY&units=metric&lang=es');
+    const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q=Jungapeo&appid=cb2cfb2c5f62bb4438016eab750db987&units=metric&lang=es');
     const data = await response.json();
-    const weatherDiv = document.getElementById('weather-data');
-    weatherDiv.innerHTML = `
-      <p>🌡️ ${Math.round(data.main.temp)}°C • ☁️ ${data.weather[0].description}</p>
+    document.getElementById('weather-data').innerHTML = `
+      <p>🌡️ ${Math.round(data.main.temp)}°C • ${data.weather[0].description}</p>
       <small>${new Date().toLocaleDateString('es')}</small>
     `;
   } catch (error) {
-    console.error("Error al cargar el clima:", error);
+    console.error("Weather error:", error);
+    document.getElementById('weather-data').innerHTML = '<p>Clima no disponible</p>';
   }
 }
+
 
 // Botón de WhatsApp
 document.getElementById('whatsapp-button').addEventListener('click', () => {
