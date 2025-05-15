@@ -1,0 +1,88 @@
+/* Estilos generales */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  color: #e63946;
+  font-size: 2.5rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+/* Tarjetas de detalles */
+.event-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.detail-card {
+  background: #f1faee;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* Widget de clima */
+.weather-widget {
+  background: #a8dadc;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Botones */
+button {
+  background: #457b9d;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #1d3557;
+}
+
+.gallery-link {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #457b9d;
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .event-details {
+    grid-template-columns: 1fr;
+  }
+}
