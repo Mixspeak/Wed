@@ -1,28 +1,93 @@
-// Configuración de AWS (reemplaza con tus credenciales)
-//const AWS_CONFIG = {
-//  region: '__AWS_REGION__',
-//  accessKeyId: '__AWS_ACCESS_KEY_ID__',
-//  secretAccessKey: '__AWS_SECRET_ACCESS_KEY__'
-//};
-// Frontend/app.js
 AWS.config.region = 'us-east-1'; // Only region is needed in client code
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
   IdentityPoolId: 'us-east-1:7e8675ae-dbc4-4685-8620-81f78ae7ac20'
 });
 
-// Widget de clima
 async function fetchWeather() {
   try {
     const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q=Jungapeo&appid=cb2cfb2c5f62bb4438016eab750db987&units=metric&lang=es');
     const data = await response.json();
+    
+    // Icono según condiciones
+    const weatherIcon = getWeatherIcon(data.weather[0].id, data.weather[0].icon);
+    
     document.getElementById('weather-data').innerHTML = `
-      <p>🌡️ ${Math.round(data.main.temp)}°C • ${data.weather[0].description}</p>
-      <small>${new Date().toLocaleDateString('es')}</small>
+      <div class="weather-card">
+        <div class="weather-header">
+          <h3>${data.name}, ${data.sys.country}</h3>
+          <span class="weather-date">${formatDate(new Date())}</span>
+        </div>
+        <div class="weather-main">
+          ${weatherIcon}
+          <div class="weather-temp">${Math.round(data.main.temp)}°C</div>
+          <div class="weather-desc">${capitalizeFirstLetter(data.weather[0].description)}</div>
+        </div>
+        <div class="weather-details">
+          <div class="detail">
+            <span>🌡️ Sensación:</span>
+            <span>${Math.round(data.main.feels_like)}°C</span>
+          </div>
+          <div class="detail">
+            <span>💧 Humedad:</span>
+            <span>${data.main.humidity}%</span>
+          </div>
+          <div class="detail">
+            <span>💨 Viento:</span>
+            <span>${(data.wind.speed * 3.6).toFixed(1)} km/h</span>
+          </div>
+          <div class="detail">
+            <span>☀️ Amanecer:</span>
+            <span>${formatTime(data.sys.sunrise, data.timezone)}</span>
+          </div>
+          <div class="detail">
+            <span>🌙 Atardecer:</span>
+            <span>${formatTime(data.sys.sunset, data.timezone)}</span>
+          </div>
+        </div>
+      </div>
     `;
   } catch (error) {
     console.error("Weather error:", error);
-    document.getElementById('weather-data').innerHTML = '<p>Clima no disponible</p>';
+    document.getElementById('weather-data').innerHTML = `
+      <div class="weather-error">
+        <p>⚠️ Clima no disponible</p>
+        <small>Intenta recargar la página</small>
+      </div>
+    `;
   }
+}
+
+// Funciones auxiliares
+function formatDate(date) {
+  const options = { weekday: 'long', day: 'numeric', month: 'long' };
+  return date.toLocaleDateString('es-ES', options);
+}
+
+function formatTime(timestamp, timezone) {
+  const date = new Date((timestamp + timezone) * 1000);
+  return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function getWeatherIcon(weatherId, iconCode) {
+  const isDay = iconCode.includes('d');
+  // Mapeo de iconos según código de clima
+  const icons = {
+    '01': '☀️', // cielo claro
+    '02': '⛅', // pocas nubes
+    '03': '☁️', // nubes dispersas
+    '04': '☁️', // nubes rotas
+    '09': '🌧️', // lluvia moderada
+    '10': '🌦️', // lluvia
+    '11': '⛈️', // tormenta
+    '13': '❄️', // nieve
+    '50': '🌫️'  // niebla
+  };
+  const iconKey = weatherId.toString()[0] === '5' ? '50' : iconCode.substring(0, 2);
+  return icons[iconKey] || '🌤️';
 }
 
 
