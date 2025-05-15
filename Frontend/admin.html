@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Wed Fotos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .media-container {
+            position: relative;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .media-thumbnail {
+            max-width: 100%;
+            max-height: 200px;
+            display: block;
+            margin: 0 auto;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .search-box {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Panel de Administración</h1>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group search-box">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Buscar archivos...">
+                            <button class="btn btn-primary" id="searchBtn">Buscar</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <div class="btn-group">
+                            <button class="btn btn-outline-secondary" id="filterPhotos">Solo Fotos</button>
+                            <button class="btn btn-outline-secondary" id="filterVideos">Solo Videos</button>
+                            <button class="btn btn-outline-primary" id="filterAll">Todos</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p>Cargando archivos...</p>
+                </div>
+                
+                <div class="row" id="mediaGrid">
+                    <!-- Los archivos se cargarán aquí -->
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button class="btn btn-primary" id="loadMoreBtn" style="display: none;">Cargar más</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="confirmModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas eliminar este archivo? Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.963.0.min.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
