@@ -1,103 +1,117 @@
-// Configuración de AWS (reemplaza con tus credenciales)
-//AWS.config.update({
-//  region: 'us-east-1',
-//  accessKeyId: '',
-//  secretAccessKey: ''
-//});
-
 // First verify AWS and Amplify are loaded
-if (typeof AWS === 'undefined' || typeof Amplify === 'undefined') {
-  console.error('AWS SDK or Amplify not loaded!');
-  document.body.innerHTML = `
-    <div style="color: red; padding: 20px;">
-      <h2>Loading Error</h2>
-      <p>Failed to load required resources. Please:</p>
-      <ol>
-        <li>Refresh the page</li>
-        <li>Check your internet connection</li>
-        <li>Try a different browser</li>
-      </ol>
-    </div>
-  `;
-} else {
-  // Configuration - REPLACE WITH YOUR ACTUAL VALUES
+function initializeApp() {
+  if (typeof AWS === 'undefined' || typeof Amplify === 'undefined') {
+    showError('AWS SDK or Amplify not loaded!', true);
+    return;
+  }
+
+  // Configuration
   const config = {
     region: 'us-east-1',
     userPoolId: 'us-east-1_nSY2Zks8d',
-    userPoolWebClientId: '8087ck55rluaqvde5u2qt42b2', // Get from Cognito Console
+    userPoolWebClientId: '8087ck55rluaqvde5u2qt42b2',
     identityPoolId: 'us-east-1:dd6c356c-7255-408a-9e13-6e6eafe75b41'
   };
 
-  // Initialize Amplify
   try {
+    // Initialize Amplify and AWS
     Amplify.configure({ Auth: config });
     
-    // Initialize AWS Credentials
     AWS.config.update({
       region: config.region,
       credentials: new AWS.CognitoIdentityCredentials({
         IdentityPoolId: config.identityPoolId,
-        Logins: {} // Empty for unauthenticated access
+        Logins: {}
       })
     });
 
     // Verify credentials
     AWS.config.credentials.get(function(err) {
       if (err) {
-        console.error("Error getting credentials:", err);
-        showError("Failed to initialize. Please refresh.");
-      } else {
-        console.log("Successfully initialized!");
-        // Your application code here
+        console.error("Credentials error:", err);
+        showError("Error de inicialización. Por favor recarga.", false);
+        return;
       }
+      
+      console.log("AWS initialized successfully");
+      initializeAppFeatures();
     });
   } catch (error) {
     console.error("Initialization error:", error);
-    showError("Application error. Please try again later.");
+    showError("Error en la aplicación. Intenta más tarde.", false);
   }
 }
 
-function showError(message) {
+function initializeAppFeatures() {
+  // Weather Widget
+  async function fetchWeather() {
+    try {
+      const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q=Jungapeo&appid=cb2cfb2c5f62bb4438016eab750db987&units=metric&lang=es');
+      const data = await response.json();
+      const weatherElement = document.getElementById('weather-data');
+      if (weatherElement) {
+        weatherElement.innerHTML = `
+          <p>🌡️ ${Math.round(data.main.temp)}°C • ${data.weather[0].description}</p>
+          <small>${new Date().toLocaleDateString('es')}</small>
+        `;
+      }
+    } catch (error) {
+      console.error("Weather error:", error);
+      const weatherElement = document.getElementById('weather-data');
+      if (weatherElement) {
+        weatherElement.innerHTML = '<p>Clima no disponible</p>';
+      }
+    }
+  }
+
+  // WhatsApp Button
+  const whatsappButton = document.getElementById('whatsapp-button');
+  if (whatsappButton) {
+    whatsappButton.addEventListener('click', () => {
+      const phone = "+525548943857";
+      const message = encodeURIComponent("¡Confirmo mi asistencia al evento de Evelyn & Irving!");
+      window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+    });
+  }
+
+  // Initialize features
+  fetchWeather();
+}
+
+function showError(message, isFatal) {
   const errorDiv = document.createElement('div');
   errorDiv.style.cssText = `
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background: #ffebee;
-    color: #c62828;
+    background: ${isFatal ? '#ffebee' : '#fff8e1'};
+    color: ${isFatal ? '#c62828' : '#e65100'};
     padding: 15px;
     text-align: center;
     z-index: 1000;
+    border-bottom: 1px solid ${isFatal ? '#ef9a9a' : '#ffcc80'};
   `;
-  errorDiv.textContent = message;
+  
+  errorDiv.innerHTML = `
+    <strong>${isFatal ? 'Error Grave' : 'Advertencia'}</strong>
+    <p>${message}</p>
+    <button onclick="window.location.reload()" style="
+      background: ${isFatal ? '#c62828' : '#fb8c00'};
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    ">Recargar</button>
+  `;
+  
   document.body.prepend(errorDiv);
 }
 
-// Widget de clima
-async function fetchWeather() {
-  try {
-    const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q=Jungapeo&appid=cb2cfb2c5f62bb4438016eab750db987&units=metric&lang=es');
-    const data = await response.json();
-    document.getElementById('weather-data').innerHTML = `
-      <p>🌡️ ${Math.round(data.main.temp)}°C • ${data.weather[0].description}</p>
-      <small>${new Date().toLocaleDateString('es')}</small>
-    `;
-  } catch (error) {
-    console.error("Weather error:", error);
-    document.getElementById('weather-data').innerHTML = '<p>Clima no disponible</p>';
-  }
+// Start the app when DOM is ready
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  initializeApp();
+} else {
+  document.addEventListener('DOMContentLoaded', initializeApp);
 }
-
-
-// Botón de WhatsApp
-document.getElementById('whatsapp-button').addEventListener('click', () => {
-  const phone = "5215512345678"; // Reemplaza con tu número
-  const message = encodeURIComponent("¡Confirmo mi asistencia al evento de Laura y Alejandro!");
-  window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
-});
-
-// Inicialización
-document.addEventListener('DOMContentLoaded', () => {
-  fetchWeather();
-});
