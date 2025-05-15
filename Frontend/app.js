@@ -5,47 +5,73 @@
 //  secretAccessKey: ''
 //});
 
-// Wait for everything to be ready
-document.addEventListener('DOMContentLoaded', function() {
-  // Verify Amplify is available
-  if (typeof Amplify === 'undefined') {
-    console.error('Amplify not loaded! Check script loading order');
-    return;
-  }
-
-  // Configuration
+// First verify AWS and Amplify are loaded
+if (typeof AWS === 'undefined' || typeof Amplify === 'undefined') {
+  console.error('AWS SDK or Amplify not loaded!');
+  document.body.innerHTML = `
+    <div style="color: red; padding: 20px;">
+      <h2>Loading Error</h2>
+      <p>Failed to load required resources. Please:</p>
+      <ol>
+        <li>Refresh the page</li>
+        <li>Check your internet connection</li>
+        <li>Try a different browser</li>
+      </ol>
+    </div>
+  `;
+} else {
+  // Configuration - REPLACE WITH YOUR ACTUAL VALUES
   const config = {
     region: 'us-east-1',
     userPoolId: 'us-east-1_nSY2Zks8d',
-    userPoolWebClientId: '8087ck55rluaqvde5u2qt42b2', // Replace with your actual ID
+    userPoolWebClientId: '8087ck55rluaqvde5u2qt42b2', // Get from Cognito Console
     identityPoolId: 'us-east-1:dd6c356c-7255-408a-9e13-6e6eafe75b41'
   };
 
   // Initialize Amplify
-  Amplify.configure({
-    Auth: config
-  });
-
-  // Initialize AWS Credentials
-  AWS.config.update({
-    region: config.region,
-    credentials: new AWS.CognitoIdentityCredentials({
-      IdentityPoolId: config.identityPoolId
-    })
-  });
-
-  // Now safe to use AWS services
-  console.log('AWS and Amplify initialized!');
-});
-
-// Example usage
-async function signIn(username, password) {
   try {
-    const user = await Amplify.Auth.signIn(username, password);
-    console.log('Signed in:', user);
+    Amplify.configure({ Auth: config });
+    
+    // Initialize AWS Credentials
+    AWS.config.update({
+      region: config.region,
+      credentials: new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: config.identityPoolId,
+        Logins: {} // Empty for unauthenticated access
+      })
+    });
+
+    // Verify credentials
+    AWS.config.credentials.get(function(err) {
+      if (err) {
+        console.error("Error getting credentials:", err);
+        showError("Failed to initialize. Please refresh.");
+      } else {
+        console.log("Successfully initialized!");
+        // Your application code here
+      }
+    });
   } catch (error) {
-    console.error('Sign in error:', error);
+    console.error("Initialization error:", error);
+    showError("Application error. Please try again later.");
   }
+}
+
+function showError(message) {
+  const errorDiv = document.createElement('div');
+  errorDiv.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #ffebee;
+    color: #c62828;
+    padding: 15px;
+    text-align: center;
+    z-index: 1000;
+  `;
+  errorDiv.textContent = message;
+  document.body.prepend(errorDiv);
 }
 
 // Widget de clima
