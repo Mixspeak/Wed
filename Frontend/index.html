@@ -3,45 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Invitación Especial</title>
+  <title>Invitación Elegante | Laura & Alejandro</title>
   <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
   <div class="container">
+    <!-- Header con título y subtítulo -->
     <header>
-      <h1>¡Estás Invitado!</h1>
-      <p class="subtitle">Celebración de Aniversario</p>
+      <h1>Laura & Alejandro</h1>
+      <p class="subtitle">15 de Junio de 2025 • Hacienda Los Ángeles, CDMX</p>
     </header>
 
+    <!-- Sección de detalles del evento -->
     <section class="event-details">
       <div class="detail-card">
-        <h2>📅 Fecha</h2>
-        <p>25 de Diciembre, 2025</p>
+        <i class="fas fa-calendar-alt icon-gold"></i>
+        <h2>Fecha</h2>
+        <p>15 de Junio, 2025</p>
+        <p class="highlight">4:30 PM</p>
       </div>
+      
       <div class="detail-card">
-        <h2>📍 Lugar</h2>
-        <p>Hacienda Las Palmas, CDMX</p>
+        <i class="fas fa-map-marker-alt icon-gold"></i>
+        <h2>Lugar</h2>
+        <p>Hacienda Los Ángeles</p>
+        <p class="highlight">Ciudad de México</p>
       </div>
+      
       <div class="detail-card">
-        <h2>👗 Código de Vestimenta</h2>
-        <p>Elegante Casual</p>
+        <i class="fas fa-tshirt icon-gold"></i>
+        <h2>Código</h2>
+        <p>Elegante Formal</p>
+        <p class="highlight">Tonos Neutros</p>
       </div>
     </section>
 
+    <!-- Widget de clima (integrado) -->
     <section class="weather-widget">
-      <h2>Clima Pronosticado</h2>
+      <h2><i class="fas fa-cloud-sun"></i> Clima Pronosticado</h2>
       <div id="weather-data">
         <p>Cargando...</p>
       </div>
     </section>
 
-    <section class="confirmation">
-      <button id="whatsapp-button">📱 Confirmar por WhatsApp</button>
+    <!-- Botones principales -->
+    <section class="action-buttons">
+      <button id="whatsapp-button" class="gold-button">
+        <i class="fab fa-whatsapp"></i> Confirmar Asistencia
+      </button>
+      
+      <a href="gallery.html" class="gold-button outline">
+        <i class="fas fa-camera"></i> Ver Álbum
+      </a>
     </section>
 
+    <!-- Footer con enlace secundario -->
     <footer>
-      <a href="gallery.html" class="gallery-link">📸 Ver Álbum del Evento</a>
+      <p>¿Preguntas? <a href="https://wa.me/5215512345678" class="text-link">Contáctanos</a></p>
     </footer>
   </div>
 
