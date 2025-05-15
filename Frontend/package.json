@@ -1,0 +1,7 @@
+{
+  "name": "wedding-invitation",
+  "version": "1.0.0",
+  "dependencies": {
+    "aws-sdk": "^2.1234.0"
+  }
+}
