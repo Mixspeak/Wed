@@ -1,29 +1,34 @@
-// Configure AWS with Cognito Identity Pool
-AWS.config.update({
-  region: 'us-east-1', // Must match your Identity Pool region
-  credentials: new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: 'us-east-1:dd6c356c-7255-408a-9e13-6e6eafe75b41'
-  })
-});
+// Wait for everything to be ready
+document.addEventListener('DOMContentLoaded', function() {
+  // Verify Amplify is available
+  if (typeof Amplify === 'undefined') {
+    console.error('Amplify not loaded! Check script loading order');
+    return;
+  }
 
-// Configure Amplify
-const authConfig = {
-  region: 'us-east-1',
-  userPoolId: 'us-east-1_nSY2Zks8d',
-  userPoolWebClientId: '8087ck55rluaqvde5u2qt42b2',
-  identityPoolId: 'us-east-1:dd6c356c-7255-408a-9e13-6e6eafe75b41'
-};
+  // Configuration
+  const config = {
+    region: 'us-east-1',
+    userPoolId: 'us-east-1_nSY2Zks8d',
+    userPoolWebClientId: '8087ck55rluaqvde5u2qt42b2', // Replace with your actual ID
+    identityPoolId: 'us-east-1:dd6c356c-7255-408a-9e13-6e6eafe75b41'
+  };
 
-AWS.config.update({
-  region: 'us-east-1',
-  credentials: new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: authConfig.identityPoolId
-  })
-});
+  // Initialize Amplify
+  Amplify.configure({
+    Auth: config
+  });
 
-// Initialize Amplify
-Amplify.configure({
-  Auth: authConfig
+  // Initialize AWS Credentials
+  AWS.config.update({
+    region: config.region,
+    credentials: new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: config.identityPoolId
+    })
+  });
+
+  // Now safe to use AWS services
+  console.log('AWS and Amplify initialized!');
 });
 
 // DOM elements
