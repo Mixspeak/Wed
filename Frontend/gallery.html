@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Álbum del Evento | Laura & Alejandro</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header elegante -->
+    <header class="gallery-header">
+      <h1><i class="fas fa-camera-retro"></i> Álbum Compartido</h1>
+      <p class="subtitle">Sube tus fotos y videos para recordar este día especial</p>
+    </header>
+
+    <!-- Sección de subida de archivos -->
+    <section class="upload-section">
+      <div class="upload-box">
+        <input type="file" id="file-input" accept="image/*, video/*" multiple>
+        <label for="file-input" class="gold-button">
+          <i class="fas fa-cloud-upload-alt"></i> Seleccionar Archivos
+        </label>
+        <button id="upload-button" class="gold-button outline">
+          <i class="fas fa-paper-plane"></i> Subir
+        </button>
+        <p class="file-info">Formatos soportados: JPG, PNG, MP4</p>
+      </div>
+    </section>
+
+    <!-- Galería de imágenes -->
+    <section class="gallery-grid" id="gallery">
+      <!-- Las imágenes se cargarán aquí dinámicamente -->
+      <div class="gallery-placeholder">
+        <i class="fas fa-images"></i>
+        <p>No hay fotos aún. ¡Sé el primero en compartir!</p>
+      </div>
+    </section>
+
+    <!-- Footer consistente -->
+    <footer>
+      <a href="index.html" class="gold-button outline">
+        <i class="fas fa-arrow-left"></i> Volver a la Invitación
+      </a>
+    </footer>
+  </div>
+
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.963.0.min.js"></script>
+  <script src="gallery.js"></script>
+</body>
+</html>
