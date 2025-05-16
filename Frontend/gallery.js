@@ -81,29 +81,42 @@ try {
   }
 }
 
-// Add this function to check network type
-function checkNetworkConnection() {
-  // Note: This will only work in browsers that support the Network Information API
-  // (primarily Chrome/Edge on Android). For other browsers, we'll assume mobile data.
-  if (navigator.connection) {
-    const connection = navigator.connection;
+// Enhanced network detection function
+async function checkNetworkConnection() {
+  try {
+    // Modern browsers with Network Information API
+    if (navigator.connection) {
+      const connection = navigator.connection;
+      const networkInfo = {
+        isWifi: connection.effectiveType === 'wifi',
+        isSlow: ['slow-2g', '2g'].includes(connection.effectiveType),
+        type: connection.effectiveType,
+        downlink: connection.downlink, // Mbps
+        saveData: connection.saveData
+      };
+      
+      console.log('Network info:', networkInfo);
+      return networkInfo;
+    }
+    
+    // Fallback for browsers without Network Information API
+    console.warn('Network Information API not available, using fallback detection');
     return {
-      isWifi: connection.effectiveType === 'wifi',
-      isSlow: connection.effectiveType === 'slow-2g' || 
-              connection.effectiveType === '2g' ||
-              connection.saveData,
-      type: connection.effectiveType
+      isWifi: false, // Assume mobile data to be cautious
+      isSlow: false,
+      type: 'unknown'
+    };
+  } catch (error) {
+    console.error('Network detection error:', error);
+    return {
+      isWifi: false,
+      isSlow: false,
+      type: 'error'
     };
   }
-  // Fallback for browsers that don't support the API
-  return {
-    isWifi: false,
-    isSlow: false,
-    type: 'unknown'
-  };
 }
 
-// Modified loadGallery function with network awareness
+// Modified loadGallery function with better network handling
 async function loadGallery() {
   try {
     // Show loading state
@@ -114,7 +127,11 @@ async function loadGallery() {
       </div>
     `;
 
-    // First get the list of files with sizes
+    // Get network status
+    const network = await checkNetworkConnection();
+    console.log('Current network:', network);
+
+    // Get gallery content
     const params = { Bucket: bucketName };
     const data = await s3.listObjectsV2(params).promise();
     
@@ -132,90 +149,102 @@ async function loadGallery() {
     const totalSizeBytes = data.Contents.reduce((sum, item) => sum + item.Size, 0);
     const totalSizeMB = (totalSizeBytes / (1024 * 1024)).toFixed(1);
 
-    // Check network status
-    const network = checkNetworkConnection();
-    
-    if (!network.isWifi) {
-      // Ask for confirmation on mobile data
-      const shouldLoad = confirm(
-        `Estás usando ${network.type === 'unknown' ? 'datos móviles' : network.type}.\n\n` +
-        `La galería contiene ${data.Contents.length} archivos (${totalSizeMB} MB).\n` +
-        `¿Deseas cargar las fotos ahora?`
-      );
-      
-      if (!shouldLoad) {
-        gallery.innerHTML = `
-          <div class="gallery-placeholder">
-            <i class="fas fa-mobile-alt"></i>
-            <p>Carga de fotos cancelada para ahorrar datos.</p>
-            <button class="gold-button" id="retry-load">Cargar de todos modos</button>
-          </div>
-        `;
-        document.getElementById('retry-load').addEventListener('click', loadGallery);
+    // Check if we should proceed with loading
+    if (!network.isWifi && totalSizeMB > 5) { // 5MB threshold
+      const shouldProceed = await showNetworkWarning(totalSizeMB, data.Contents.length);
+      if (!shouldProceed) {
+        showLimitedGalleryOption();
         return;
       }
     }
 
-    // If wifi or user confirmed, proceed with loading
-    gallery.innerHTML = '';
-    
-    // Sort by upload date (newest first)
-    const sortedItems = data.Contents.sort((a, b) => 
-      new Date(b.LastModified) - new Date(a.LastModified));
-    
-    // Create document fragment for better performance
-    const fragment = document.createDocumentFragment();
-    
-    sortedItems.forEach(item => {
-      const fileUrl = `https://${bucketName}.s3.amazonaws.com/${encodeURIComponent(item.Key)}`;
-      const fileType = item.Key.split('.').pop().toLowerCase();
-      const isVideo = ['mp4', 'mov', 'avi', 'webm'].includes(fileType);
-      
-      const galleryItem = document.createElement('div');
-      galleryItem.className = 'gallery-item';
-      
-      // For mobile data, use lazy loading and lower quality if possible
-      if (isVideo) {
-        galleryItem.innerHTML = `
-          <video controls preload="${network.isWifi ? 'auto' : 'metadata'}" ${!network.isWifi ? 'poster="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="' : ''}>
-            <source src="${fileUrl}" type="video/${fileType}">
-          </video>
-          <span class="file-type">Video (${(item.Size / (1024 * 1024)).toFixed(1)} MB)</span>
-        `;
-      } else {
-        galleryItem.innerHTML = `
-          <img 
-            src="${fileUrl}" 
-            alt="Foto del evento" 
-            loading="lazy"
-            ${!network.isWifi ? 'decoding="async"' : ''}
-          >
-          <span class="file-type">Foto (${(item.Size / (1024 * 1024)).toFixed(1)} MB)</span>
-        `;
-      }
-      
-      fragment.appendChild(galleryItem);
-    });
-    
-    gallery.appendChild(fragment);
+    // Load full gallery
+    renderGallery(data.Contents, network);
     
   } catch (error) {
-    console.error('Error al cargar galería:', error);
-    gallery.innerHTML = `
-      <div class="error">
-        <i class="fas fa-exclamation-triangle"></i>
-        <p>Error al cargar las fotos. Por favor intenta más tarde.</p>
-      </div>
-    `;
+    console.error('Error loading gallery:', error);
+    showErrorState();
   }
 }
 
-// Add network change listener to update behavior if connection changes
-if (navigator.connection) {
-  navigator.connection.addEventListener('change', () => {
-    console.log('Network changed to:', navigator.connection.effectiveType);
-    // You could reload with new settings if desired
+// Show network warning dialog
+function showNetworkWarning(totalSizeMB, itemCount) {
+  return new Promise((resolve) => {
+    const warningDiv = document.createElement('div');
+    warningDiv.className = 'network-warning';
+    warningDiv.innerHTML = `
+      <div class="warning-content">
+        <h3>Uso de Datos Móviles</h3>
+        <p>Estás usando una conexión de datos móviles.</p>
+        <p>La galería contiene ${itemCount} archivos (${totalSizeMB} MB).</p>
+        <div class="warning-actions">
+          <button id="load-anyway" class="gold-button">Cargar de todos modos</button>
+          <button id="load-preview" class="gold-button outline">Ver solo vista previa</button>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(warningDiv);
+    
+    document.getElementById('load-anyway').addEventListener('click', () => {
+      document.body.removeChild(warningDiv);
+      resolve(true);
+    });
+    
+    document.getElementById('load-preview').addEventListener('click', () => {
+      document.body.removeChild(warningDiv);
+      resolve(false);
+    });
   });
+}
+
+// Render gallery based on network conditions
+function renderGallery(items, network) {
+  gallery.innerHTML = '';
+  
+  const fragment = document.createDocumentFragment();
+  const loadFullMedia = network.isWifi || confirmMediaLoad;
+  
+  items.forEach(item => {
+    const galleryItem = createGalleryItem(item, loadFullMedia);
+    fragment.appendChild(galleryItem);
+  });
+  
+  gallery.appendChild(fragment);
+}
+
+// Create individual gallery item with network-appropriate loading
+function createGalleryItem(item, loadFullMedia) {
+  const fileUrl = `https://${bucketName}.s3.amazonaws.com/${encodeURIComponent(item.Key)}`;
+  const fileType = item.Key.split('.').pop().toLowerCase();
+  const isVideo = ['mp4', 'mov', 'avi'].includes(fileType);
+  const sizeMB = (item.Size / (1024 * 1024)).toFixed(1);
+  
+  const galleryItem = document.createElement('div');
+  galleryItem.className = 'gallery-item';
+  
+  if (isVideo) {
+    galleryItem.innerHTML = `
+      <video ${loadFullMedia ? 'controls' : 'preload="none" poster="placeholder.jpg"'} 
+             ${loadFullMedia ? `src="${fileUrl}"` : 'data-src="'+fileUrl+'"'}>
+      </video>
+      <span class="file-type">Video (${sizeMB} MB)</span>
+    `;
+  } else {
+    galleryItem.innerHTML = `
+      <img ${loadFullMedia ? `src="${fileUrl}"` : 'src="placeholder.jpg" data-src="'+fileUrl+'"'} 
+           alt="Foto del evento" 
+           loading="${loadFullMedia ? 'eager' : 'lazy'}">
+      <span class="file-type">Foto (${sizeMB} MB)</span>
+    `;
+  }
+  
+  // Lazy load if needed
+  if (!loadFullMedia) {
+    galleryItem.addEventListener('click', () => loadFullQuality(galleryItem, fileUrl, isVideo));
+  }
+  
+  return galleryItem;
 }
 
 // Add drag and drop functionality
