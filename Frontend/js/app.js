@@ -181,21 +181,8 @@ function getWeatherIcon(weatherId, iconCode) {
   return icons[iconKey] || '🌤️';
 }
 
-
-// Botón de WhatsApp
-document.getElementById('whatsapp-button').addEventListener('click', () => {
-  const phone = "+525548943857"; // Reemplaza con tu número
-  const message = encodeURIComponent("¡Confirmo mi asistencia al evento de Irving y Evelyn!");
-  window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
-});
-
-// Inicialización
-document.addEventListener('DOMContentLoaded', () => {
-  fetchWeather();
-});
-
-
 document.addEventListener('DOMContentLoaded', function() {
+  fetchWeather();
   // Set your wedding details here
   const weddingDetails = {
     title: "Boda de Irving y Evelyn",
@@ -210,6 +197,25 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('download-ics').addEventListener('click', function() {
     downloadICS(weddingDetails);
   });
+
+  const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
+  const guestDetails = document.getElementById('guest-details');
+  
+  // Show/hide guest details based on attendance selection
+  attendanceRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (this.value === 'yes') {
+        guestDetails.style.display = 'block';
+        document.getElementById('guests').setAttribute('required', '');
+      } else {
+        guestDetails.style.display = 'block';
+        document.getElementById('guests').removeAttribute('required');
+      }
+    });
+  });
+  
+  // Initialize based on default selection
+  document.querySelector('input[name="attendance"][value="yes"]').dispatchEvent(new Event('change'));
 });
 
 function downloadICS(details) {
