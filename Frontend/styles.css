@@ -89,6 +89,69 @@ h1 {
   margin-bottom: 15px;
 }
 
+/* Forecast Styles */
+.weather-forecast {
+  margin-top: 30px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.weather-forecast h3 {
+  font-family: 'Playfair Display', serif;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.forecast-days {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+}
+
+.forecast-day {
+  text-align: center;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.forecast-date {
+  font-weight: 600;
+  color: #D4AF37;
+  margin-bottom: 10px;
+}
+
+.forecast-icon {
+  font-size: 2rem;
+  margin: 10px 0;
+}
+
+.forecast-temp {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.max-temp {
+  font-weight: bold;
+  color: #333;
+}
+
+.min-temp {
+  color: #777;
+}
+
+.forecast-desc {
+  font-size: 0.9rem;
+  color: #555;
+}
+
 /* Botones */
 button {
   background: #D4AF37;
