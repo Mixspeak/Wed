@@ -34,11 +34,36 @@
       </div>
     </section>
   </div>
-
+  
+  <section class="admin-section">
+    <h2><i class="fas fa-qrcode"></i> Escanear Código QR</h2>
+    
+    <div class="qr-scanner-options">
+      <button id="start-camera" class="gold-button">
+        <i class="fas fa-camera"></i> Usar Cámara
+      </button>
+      <button id="upload-qr" class="gold-button outline">
+        <i class="fas fa-upload"></i> Subir Imagen
+      </button>
+      <input type="file" id="qr-file" accept="image/*" style="display: none;">
+    </div>
+    
+    <div id="scanner-container" style="display: none;">
+      <div id="qr-reader" style="width: 100%; max-width: 500px;"></div>
+      <button id="stop-camera" class="gold-button outline">
+        <i class="fas fa-stop"></i> Detener Cámara
+      </button>
+    </div>
+    
+    <div id="scan-result" class="scan-result"></div>
+  </section>
+  
   <!-- Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <!-- Librería para leer códigos QR -->
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
   <script src="js/admin-confirmaciones.js"></script>
 </body>
 </html>

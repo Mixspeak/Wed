@@ -260,3 +260,41 @@
     margin-bottom: 10px;
     display: block;
   }
+
+  .qr-scanner-options {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  #scanner-container {
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  #qr-reader {
+    margin: 0 auto;
+    border: 2px solid #D4AF37;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .scan-result {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background: #f5f5f0;
+  }
+  
+  .scan-success {
+    border-left: 4px solid #1DB954;
+  }
+  
+  .scan-error {
+    border-left: 4px solid #E60023;
+  }
+  
+  #stop-camera {
+    margin-top: 15px;
+  }
