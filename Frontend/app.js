@@ -184,8 +184,8 @@ function getWeatherIcon(weatherId, iconCode) {
 
 // Botón de WhatsApp
 document.getElementById('whatsapp-button').addEventListener('click', () => {
-  const phone = "5215512345678"; // Reemplaza con tu número
-  const message = encodeURIComponent("¡Confirmo mi asistencia al evento de Laura y Alejandro!");
+  const phone = "+525548943857"; // Reemplaza con tu número
+  const message = encodeURIComponent("¡Confirmo mi asistencia al evento de Irving y Evelyn!");
   window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
 });
 
@@ -193,3 +193,73 @@ document.getElementById('whatsapp-button').addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
   fetchWeather();
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Set your wedding details here
+  const weddingDetails = {
+    title: "Boda de Irving y Evelyn",
+    description: "Celebración del matrimonio. ¡Esperamos verte allí!\n\nVestimenta: Formal\nDirección: Hotel Agua Blanca, Jungapeo, Michoacán",
+    location: "Hotel Agua Blanca, Jungapeo, Michoacán",
+    startTime: "20250516T160000", // Format: YYYYMMDDTHHMMSS
+    endTime: "20250516T230000",   // Adjust with your times
+    timezone: "America/Mexico_City",
+    reminder: "-PT15M" // 15 minute reminder
+  };
+
+  document.getElementById('download-ics').addEventListener('click', function() {
+    downloadICS(weddingDetails);
+  });
+});
+
+function downloadICS(details) {
+  // Generate the ICS file content
+  const icsContent = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Wedding//ES',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:${Date.now()}@irvingyevelyn.com`,
+    `DTSTAMP:${formatDateForICS(new Date())}`,
+    `DTSTART;TZID=${details.timezone}:${details.startTime}`,
+    `DTEND;TZID=${details.timezone}:${details.endTime}`,
+    `SUMMARY:${details.title}`,
+    `DESCRIPTION:${details.description.replace(/\n/g, '\\n')}`,
+    `LOCATION:${details.location}`,
+    'STATUS:CONFIRMED',
+    'TRANSP:OPAQUE',
+    'BEGIN:VALARM',
+    `TRIGGER:${details.reminder}`,
+    'ACTION:DISPLAY',
+    'DESCRIPTION:Recordatorio de boda',
+    'END:VALARM',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\n');
+
+  // Create and trigger the download
+  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'Boda-Evelyn-Irving.ics';
+  document.body.appendChild(link);
+  link.click();
+  
+  // Clean up
+  setTimeout(() => {
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }, 100);
+}
+
+function formatDateForICS(date) {
+  return date.toISOString()
+    .replace(/-/g, '')
+    .replace(/:/g, '')
+    .replace(/\..+/, '')
+    .replace('T', '');
+}

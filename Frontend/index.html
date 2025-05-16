@@ -8,7 +8,10 @@
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  
+  <script type="text/javascript" async defer src="pinit.js"></script>
+  <!-- Tripadvisor Widget Script -->
+  <script src="https://www.jscache.com/wejs?wtype=cdsratingsonlynarrow&uniq=837&locationId=2693070&lang=en_US&border=true&shadow=false&display_version=2" 
+  data-loadtrk onload="this.loadtrk=true"></script>
   <script src="aws-sdk.min.js"></script>
   <script src="aws-amplify.min.js"></script>
 </head>
@@ -27,6 +30,9 @@
         <h2>Fecha</h2>
         <p>15 de Junio, 2025</p>
         <p class="highlight">4:30 PM</p>
+        <div class="calendar-download">
+          <h3 id="download-ics"><i class="far fa-calendar-alt"></i> Añadir a Calendario</h3>
+        </div>
       </div>
       
       <div class="detail-card">
@@ -35,12 +41,49 @@
         <p>Hacienda Los Ángeles</p>
         <p class="highlight">Ciudad de México</p>
       </div>
+
+      <!-- Add this in your HTML where you want the accommodation section -->
+      <section class="detal-card">
+        <h2 style="text-align: center;"><i class="fas fa-hotel"></i> Alojamiento Recomendado</h2>
+        <div class="accommodation-container">
+          <!-- Hotel Aguablanca Direct Link -->
+          <div class="hotel-card">
+            <div class="hotel-image">
+              <img src="https://lirp.cdn-website.com/58af03ae/dms3rep/multi/opt/zm2mxX2Q-1920w.jpeg" alt="Hotel Aguablanca">
+            </div>
+            <div class="hotel-info">
+              <h3>Hotel Aguablanca</h3>
+              <p class="hotel-description">Un encantador hotel con vistas espectaculares y todas las comodidades para tu estancia.</p>
+              <div class="hotel-actions">
+                <a href="https://www.aguablanca.mx/" target="_blank" class="gold-button">
+                  <i class="fas fa-external-link-alt"></i> Visitar Sitio Web
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tripadvisor Widget -->
+          <div class="tripadvisor-widget">
+            <div id="TA_cdsratingsonlynarrow837" class="TA_cdsratingsonlynarrow">
+              <ul id="FlXLWQ5" class="TA_links Ype9bQ">
+                <li id="zHd3Qb" class="xvs0FD">
+                  <a target="_blank" href="https://www.tripadvisor.com/">
+                    <img src="https://www.tripadvisor.com/img/cdsi/img2/branding/tripadvisor_logo_transp_340x80-18034-2.png" alt="TripAdvisor"/>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
       
       <div class="detail-card">
         <i class="fas fa-tshirt icon-gold"></i>
         <h2>Código</h2>
         <p>Elegante Formal</p>
         <p class="highlight">Tonos Neutros</p>
+        <a data-pin-do="embedBoard" data-pin-board-width="400" data-pin-scale-height="240" data-pin-scale-width="80" href="https://www.pinterest.com/anapinskywalker/style/"></a>
+        <a data-pin-do="embedBoard" data-pin-board-width="400" data-pin-scale-height="240" data-pin-scale-width="80" href="https://mx.pinterest.com/thriftedoutfit/carrie-bradshaw-outfits/"></a>
       </div>
     </section>
 
