@@ -298,3 +298,91 @@
   #stop-camera {
     margin-top: 15px;
   }
+
+  .gold-button.danger {
+    background-color: #e74c3c;
+    border-color: #c0392b;
+  }
+  
+  .gold-button.danger:hover {
+    background-color: #c0392b;
+  }
+  
+  .confirmation-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .confirmation-actions button {
+    flex: 1 1 auto;
+    min-width: 120px;
+  }
+  
+  /* Modal de confirmación */
+  .delete-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .delete-modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+  }
+  
+  .delete-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .toast-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: 4px;
+    color: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    z-index: 1001;
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  .toast-success {
+    background-color: #2ecc71;
+  }
+  
+  .toast-error {
+    background-color: #e74c3c;
+  }
+  
+  .toast-info {
+    background-color: #3498db;
+  }
+  
+  .fade-out {
+    animation: fadeOut 0.3s ease-in forwards;
+  }
+  
+  @keyframes slideIn {
+    from { bottom: -50px; opacity: 0; }
+    to { bottom: 20px; opacity: 1; }
+  }
+  
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }

@@ -81,18 +81,21 @@ async function loadConfirmations(filter = 'all', search = '') {
     const fecha = data.fecha?.toDate ? data.fecha.toDate().toLocaleDateString() : 'Fecha no disponible';
     
     confirmationItem.innerHTML = `
-      <h3>${data.nombre || 'Sin nombre'}</h3>
-      <p><i class="fas fa-envelope"></i> ${data.email || 'sin@email.com'}</p>
-      <p><i class="fas fa-users"></i> ${data.asistentes || 0} asistentes</p>
-      <p><i class="fas fa-calendar"></i> ${fecha}</p>
-      <div class="confirmation-actions">
+    <h3>${data.nombre || 'Sin nombre'}</h3>
+    <p><i class="fas fa-envelope"></i> ${data.email || 'sin@email.com'}</p>
+    <p><i class="fas fa-users"></i> ${data.asistentes || 0} asistentes</p>
+    <p><i class="fas fa-calendar"></i> ${fecha}</p>
+    <div class="confirmation-actions">
         <button data-id="${id}" class="toggle-valid ${data.valido ? 'gold-button' : 'gold-button outline'}">
-          ${data.valido ? 'Válido' : 'No válido'}
+        ${data.valido ? 'Válido' : 'No válido'}
         </button>
         <button data-id="${id}" class="send-email gold-button">
-          <i class="fas fa-paper-plane"></i> Enviar QR
+        <i class="fas fa-paper-plane"></i> Enviar QR
         </button>
-      </div>
+        <button data-id="${id}" class="delete-btn gold-button danger">
+        <i class="fas fa-trash-alt"></i> Eliminar
+        </button>
+    </div>
     `;
     
     container.appendChild(confirmationItem);
@@ -376,4 +379,94 @@ document.getElementById('scan-result').addEventListener('click', function(e) {
       .catch(error => {
         showScanResult("Error al actualizar estado: " + error.message, false);
       });
+  }
+
+  // Modal de confirmación (agrega esto al final de tu HTML body)
+document.body.insertAdjacentHTML('beforeend', `
+    <div id="delete-modal" class="delete-modal">
+      <div class="delete-modal-content">
+        <h3>¿Eliminar esta confirmación?</h3>
+        <p>Esta acción no se puede deshacer. Se eliminarán todos los datos asociados.</p>
+        <div class="delete-modal-actions">
+          <button id="cancel-delete" class="gold-button outline">Cancelar</button>
+          <button id="confirm-delete" class="gold-button danger">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  `);
+  
+  // Variables para el control de eliminación
+  let currentDeleteId = null;
+  
+  // Delegación de eventos para los botones de eliminar
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.delete-btn')) {
+      const card = e.target.closest('.confirmation-card');
+      currentDeleteId = e.target.closest('.delete-btn').getAttribute('data-id');
+      
+      // Mostrar modal de confirmación
+      document.getElementById('delete-modal').style.display = 'flex';
+      
+      // Opcional: Resaltar la tarjeta que se eliminará
+      card.style.boxShadow = '0 0 0 2px #e74c3c';
+    }
+  });
+  
+  // Manejar acciones del modal
+  document.getElementById('confirm-delete').addEventListener('click', deleteConfirmation);
+  document.getElementById('cancel-delete').addEventListener('click', closeDeleteModal);
+  
+  // Función para cerrar el modal
+  function closeDeleteModal() {
+    document.getElementById('delete-modal').style.display = 'none';
+    currentDeleteId = null;
+    
+    // Quitar resaltado de todas las tarjetas
+    document.querySelectorAll('.confirmation-card').forEach(card => {
+      card.style.boxShadow = '';
+    });
+  }
+  
+  // Función para eliminar la confirmación
+  async function deleteConfirmation() {
+    if (!currentDeleteId) {
+      closeDeleteModal();
+      return;
+    }
+  
+    try {
+      // Mostrar estado de carga
+      document.getElementById('confirm-delete').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
+      document.getElementById('confirm-delete').disabled = true;
+      
+      // Eliminar el documento de Firestore
+      await db.collection('confirmaciones').doc(currentDeleteId).delete();
+      
+      // Mostrar mensaje de éxito
+      showToast('Confirmación eliminada correctamente', 'success');
+      
+      // Recargar la lista
+      const filter = document.getElementById('status-filter').value;
+      const searchTerm = document.getElementById('search-input').value;
+      loadConfirmations(filter, searchTerm);
+      
+    } catch (error) {
+      console.error("Error al eliminar:", error);
+      showToast('Error al eliminar la confirmación', 'error');
+    } finally {
+      closeDeleteModal();
+    }
+  }
+  
+  // Función para mostrar notificaciones (toast)
+  function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast-notification toast-${type}`;
+    toast.innerHTML = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.classList.add('fade-out');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
   }
