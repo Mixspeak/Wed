@@ -118,7 +118,8 @@ async function searchFiles() {
         if (data.Contents.length > 0) {
             const filteredFiles = data.Contents.filter(file => 
                 file.Key.toLowerCase().includes(searchTerm)
-                .filter(file => filterFile(file.Key));
+                .filter(file => filterFile(file.Key))
+            )
             
             if (filteredFiles.length > 0) {
                 displayFiles(filteredFiles);
@@ -258,5 +259,5 @@ function formatFileSize(bytes) {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i])
 }
