@@ -15,7 +15,7 @@ async function fetchWeather() {
       <div class="weather-card">
         <div class="weather-header">
           <h3>${data.name}, ${data.sys.country}</h3>
-          <span class="weather-date">${formatDate(new Date())}</span>
+          <span class="weather-date">${formatDate(new Date(), data.timezone)}</span>
         </div>
         <div class="weather-main">
           ${weatherIcon}
@@ -57,24 +57,41 @@ async function fetchWeather() {
   }
 }
 
-// Funciones auxiliares
-function formatDate(date) {
-  const options = { weekday: 'long', day: 'numeric', month: 'long' };
-  return date.toLocaleDateString('es-ES', options);
+// Improved date/time formatting functions
+function formatDate(date, timezoneOffset) {
+  // Create new date with timezone offset applied
+  const localDate = new Date(date.getTime() + (timezoneOffset * 1000));
+  
+  const options = { 
+    weekday: 'long', 
+    day: 'numeric', 
+    month: 'long',
+    timeZone: 'UTC' // We're manually handling timezone
+  };
+  return localDate.toLocaleDateString('es-ES', options);
 }
 
-function formatTime(timestamp, timezone) {
-  const date = new Date((timestamp + timezone) * 1000);
-  return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+function formatTime(timestamp, timezoneOffset) {
+  // Create Date object from UTC timestamp
+  const date = new Date(timestamp * 1000);
+  
+  // Apply timezone offset
+  const localDate = new Date(date.getTime() + (timezoneOffset * 1000));
+  
+  return localDate.toLocaleTimeString('es-ES', { 
+    hour: '2-digit', 
+    minute: '2-digit',
+    timeZone: 'UTC' // Important: We're manually handling timezone
+  });
 }
 
+// Helper functions remain the same
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function getWeatherIcon(weatherId, iconCode) {
   const isDay = iconCode.includes('d');
-  // Mapeo de iconos según código de clima
   const icons = {
     '01': '☀️', // cielo claro
     '02': '⛅', // pocas nubes
