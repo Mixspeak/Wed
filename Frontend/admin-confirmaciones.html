@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel de Administración</title>
+  
+  <link rel="stylesheet" href="css/admin-confirmaciones.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="admin-container">
+    <h1><i class="fas fa-user-shield"></i> Panel de Administración Confirmaciones</h1>
+    
+    <section class="admin-section">
+      <h2>Confirmaciones Recibidas</h2>
+      <div class="filters">
+        <input type="text" id="search-input" placeholder="Buscar por nombre o email">
+        <select id="status-filter">
+          <option value="all">Todos</option>
+          <option value="valid">Válidos</option>
+          <option value="invalid">No válidos</option>
+        </select>
+      </div>
+      <div id="confirmations-list" class="confirmations-grid"></div>
+    </section>
+    
+    <section class="admin-section">
+      <h2>Validar Invitación</h2>
+      <div class="qr-validator">
+        <input type="text" id="qr-input" placeholder="Código QR o ID de invitación">
+        <button id="validate-btn" class="gold-button">Validar</button>
+        <div id="validation-result"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="js/admin-confirmaciones.js"></script>
+</body>
+</html>

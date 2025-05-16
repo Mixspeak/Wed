@@ -1,0 +1,262 @@
+/* Estilos base para admin */
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .admin-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+  }
+  
+  .admin-section h2 {
+    font-family: 'Playfair Display', serif;
+    color: #333;
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #E8E8E3;
+  }
+  
+  /* Filtros */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .filters input, 
+  .filters select {
+    padding: 10px 15px;
+    border: 1px solid #E8E8E3;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    flex: 1 1 200px;
+  }
+  
+  /* Grid de confirmaciones */
+  .confirmations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+  }
+  
+  .confirmation-card {
+    border: 1px solid #E8E8E3;
+    border-radius: 8px;
+    padding: 15px;
+    transition: all 0.3s;
+    position: relative;
+  }
+  
+  .confirmation-card.valid {
+    border-left: 4px solid #1DB954;
+  }
+  
+  .confirmation-card.invalid {
+    border-left: 4px solid #E60023;
+  }
+  
+  .confirmation-card h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.1rem;
+  }
+  
+  .confirmation-card p {
+    margin: 8px 0;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .confirmation-card p i {
+    width: 20px;
+    color: #D4AF37;
+  }
+  
+  .confirmation-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+  }
+  
+  /* Validación QR */
+  .qr-validator {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .qr-validator input {
+    padding: 12px 15px;
+    border: 1px solid #E8E8E3;
+    border-radius: 4px;
+    width: 100%;
+  }
+  
+  #validate-btn {
+    align-self: flex-start;
+  }
+  
+  .validation-success {
+    background: #f5f5f0;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+  }
+  
+  .validation-success h3 {
+    margin-top: 0;
+  }
+  
+  .error {
+    color: #E60023;
+    padding: 10px 0;
+  }
+  
+  /* Botones */
+  .gold-button {
+    background: #D4AF37;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+  }
+  
+  .gold-button:hover {
+    background: #C19B2C;
+    transform: translateY(-2px);
+  }
+  
+  .gold-button.outline {
+    background: transparent;
+    border: 1px solid #D4AF37;
+    color: #D4AF37;
+  }
+  
+  .gold-button.outline:hover {
+    background: rgba(212, 175, 55, 0.1);
+  }
+  
+  /* Estilos para móviles */
+  @media (max-width: 768px) {
+    .admin-container {
+      padding: 15px;
+    }
+    
+    .admin-section {
+      padding: 15px;
+    }
+    
+    .confirmations-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .confirmation-card {
+      padding: 12px;
+    }
+    
+    .confirmation-actions {
+      flex-direction: column;
+    }
+    
+    .gold-button {
+      width: 100%;
+      padding: 12px;
+    }
+    
+    .filters {
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .filters input, 
+    .filters select {
+      width: 100%;
+    }
+  }
+  
+  /* Estilos para tablets */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .confirmations-grid {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    
+    .confirmation-actions {
+      flex-direction: column;
+    }
+    
+    .gold-button {
+      width: 100%;
+    }
+  }
+  
+  /* Mejoras para pantallas pequeñas */
+  @media (max-width: 480px) {
+    .admin-container h1 {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    
+    .admin-section h2 {
+      font-size: 1.2rem;
+    }
+    
+    .confirmation-card h3 {
+      font-size: 1rem;
+    }
+    
+    .confirmation-card p {
+      font-size: 0.8rem;
+    }
+    
+    .gold-button {
+      font-size: 0.8rem;
+    }
+  }
+  
+  /* Efectos de carga */
+  .loading-state {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .loading-spinner {
+    border: 3px solid rgba(212, 175, 55, 0.3);
+    border-radius: 50%;
+    border-top: 3px solid #D4AF37;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Mensaje cuando no hay datos */
+  .empty-message {
+    text-align: center;
+    padding: 30px;
+    color: #777;
+    grid-column: 1 / -1;
+  }
+  
+  .empty-message i {
+    font-size: 2rem;
+    color: #E8E8E3;
+    margin-bottom: 10px;
+    display: block;
+  }

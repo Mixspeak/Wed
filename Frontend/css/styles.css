@@ -579,3 +579,87 @@ footer {
   color: #999;
   font-size: 0.8rem;
 }
+
+/* Admin Styles */
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+.admin-section {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+}
+
+.filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.filters input, .filters select {
+  padding: 10px 15px;
+  border: 1px solid #E8E8E3;
+  border-radius: 4px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.confirmations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.confirmation-card {
+  border: 1px solid #E8E8E3;
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.confirmation-card.valid {
+  border-left: 4px solid #1DB954; /* Verde tipo Spotify */
+}
+
+.confirmation-card.invalid {
+  border-left: 4px solid #E60023; /* Rojo tipo Pinterest */
+}
+
+.confirmation-card h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.confirmation-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.qr-validator {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.qr-validator input {
+  flex-grow: 1;
+  padding: 10px 15px;
+  border: 1px solid #E8E8E3;
+  border-radius: 4px;
+}
+
+.validation-success {
+  background: #f5f5f0;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.error {
+  color: #E60023;
+}

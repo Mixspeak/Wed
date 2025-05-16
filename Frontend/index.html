@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Invitación Elegante | Evelyn & Irving</title>
   <link rel="icon" type="image/x-icon" href="images/favicon.png">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <script type="text/javascript" async defer src="pinit.js"></script>
+  <script type="text/javascript" async defer src="js/pinit.js"></script>
   <!-- Tripadvisor Widget Script -->
   <script src="https://www.jscache.com/wejs?wtype=cdsratingsonlynarrow&uniq=837&locationId=2693070&lang=en_US&border=true&shadow=false&display_version=2" 
   data-loadtrk onload="this.loadtrk=true"></script>
-  <script src="aws-sdk.min.js"></script>
-  <script src="aws-amplify.min.js"></script>
+  <script src="js/aws-sdk.min.js"></script>
+  <script src="js/aws-amplify.min.js"></script>
   <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -39,7 +39,7 @@
       <div class="detail-card">
         <i class="fas fa-calendar-alt icon-gold"></i>
         <h2>Fecha</h2>
-        <p>15 de Junio, 2025</p>
+        <p>15 de Mayo, 2026</p>
         <p class="highlight">4:30 PM</p>
         <div class="calendar-download">
           <h3 id="download-ics"><i class="far fa-calendar-alt"></i> Añadir a Calendario</h3>
@@ -49,8 +49,8 @@
       <div class="detail-card">
         <i class="fas fa-map-marker-alt icon-gold"></i>
         <h2>Lugar</h2>
-        <p>Hacienda Los Ángeles</p>
-        <p class="highlight">Ciudad de México</p>
+        <p>Hotel Agua Blanca</p>
+        <p class="highlight">Jungapeo Michoacán</p>
       </div>
 
       <!-- Add this in your HTML where you want the accommodation section -->
@@ -93,11 +93,53 @@
       </div>
     </section>
 
+    <!-- Widget de Spotify -->
+    <section class="detail-card">
+      <iframe style="border-radius:12px" 
+        src="https://open.spotify.com/embed/playlist/4nth2eOzGNVFIy8wqVnp5c?utm_source=generator" 
+        width="100%" height="152" frameBorder="0" allowfullscreen="" 
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+      </iframe>
+    </section>
+
     <!-- Botones principales -->
     <section class="action-buttons">
-      <button id="whatsapp-button" class="gold-button">
+      <!--<button id="whatsapp-button" class="gold-button">
         <i class="fab fa-whatsapp"></i> Confirmar Asistencia
-      </button>
+      </button>-->
+      <!-- Formulario de Confirmación -->
+<section id="rsvp-section">
+  <h2>Confirmar Asistencia</h2>
+  <form id="rsvp-form">
+    <div class="form-group">
+      <label for="nombre">Nombre Completo</label>
+      <input type="text" id="nombre" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Correo Electrónico</label>
+      <input type="email" id="email" required>
+    </div>
+    <div class="form-group">
+      <label for="asistentes">Número de Asistentes</label>
+      <input type="number" id="asistentes" min="1" required>
+    </div>
+    <div class="form-group">
+      <label for="mensaje">Mensaje (opcional)</label>
+      <textarea id="mensaje"></textarea>
+    </div>
+    <button type="submit" class="gold-button">Confirmar Asistencia</button>
+  </form>
+  <div id="qr-container" style="display:none; margin-top:20px; text-align:center;">
+    <h3>Tu código de confirmación</h3>
+    <div id="qr-code"></div>
+    <p>Este código QR será tu entrada al evento</p>
+    <button id="download-qr" class="gold-button outline">
+      <i class="fas fa-download"></i> Descargar QR
+    </button>
+  </div>
+</section>
+
+
       
       <a href="gallery.html" class="gold-button outline">
         <i class="fas fa-camera"></i> Ver Álbum
@@ -110,8 +152,8 @@
     </footer>
   </div>
   
-  <script src="app.local.js"></script>
-  <script src="app.js"></script>
+  <script src="js/app.local.js"></script>
+  <script src="js/app.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=GTM-5R26VPX3"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -119,5 +161,11 @@
     gtag('js', new Date());
     gtag('config', 'GTM-5R26VPX3');
   </script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  <script src="js/confirmacion.js"></script>
 </body>
 </html>
