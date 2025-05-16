@@ -1,5 +1,6 @@
 /* Fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 
 /* Estilos Generales */
 body {
@@ -9,6 +10,19 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: "Great Vibes", cursive !important;
+}
+
+:root {
+  --gold: #D4AF37;
+  --gold-light: #E8D49A;
+  --gold-dark: #B8931D;
+  --neutral: #FAFAF7;
+  --text: #333333;
+  --accent: #8B5A2B; /* Earthy brown for contrast */
 }
 
 .container {
