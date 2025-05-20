@@ -182,6 +182,7 @@ function getWeatherIcon(weatherId, iconCode) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  new SmoothParallax();
   fetchWeather();
   // Set your wedding details here
   const weddingDetails = {
@@ -268,4 +269,69 @@ function formatDateForICS(date) {
     .replace(/:/g, '')
     .replace(/\..+/, '')
     .replace('T', '');
+}
+
+/* ===========Parallax=============*/
+/* ================================*/
+// Optimized Parallax Class
+class SmoothParallax {
+  constructor() {
+    this.containers = [];
+    this.lastScrollY = 0;
+    this.ticking = false;
+    
+    this.init();
+  }
+  
+  init() {
+    document.querySelectorAll('.parallax-container').forEach(container => {
+      this.containers.push({
+        element: container,
+        layers: container.querySelectorAll('.parallax-layer, .parallax-content'),
+        top: 0,
+        height: 0
+      });
+    });
+    
+    this.calculatePositions();
+    window.addEventListener('scroll', this.onScroll.bind(this));
+    window.addEventListener('resize', this.calculatePositions.bind(this));
+  }
+  
+  calculatePositions() {
+    this.containers.forEach(container => {
+      const rect = container.element.getBoundingClientRect();
+      container.top = rect.top + window.scrollY;
+      container.height = rect.height;
+    });
+  }
+  
+  onScroll() {
+    this.lastScrollY = window.scrollY;
+    
+    if (!this.ticking) {
+      requestAnimationFrame(this.update.bind(this));
+      this.ticking = true;
+    }
+  }
+  
+  update() {
+    this.containers.forEach(container => {
+      const scrollY = this.lastScrollY;
+      const viewportHeight = window.innerHeight;
+      
+      if (scrollY + viewportHeight > container.top && 
+          scrollY < container.top + container.height) {
+        const scrolled = scrollY - container.top;
+        
+        container.layers.forEach(layer => {
+          const speed = parseFloat(layer.getAttribute('data-speed')) || 0;
+          const offset = scrolled * speed;
+          layer.style.transform = `translateY(${offset}px)`;
+        });
+      }
+    });
+    
+    this.ticking = false;
+  }
 }
