@@ -336,4 +336,84 @@ class SmoothParallax {
   }
 }
 
-
+  // ******************************************
+  // Sprites
+  // ******************************************
+  const groom = document.getElementById('groom-sprite');
+  const bride = document.getElementById('bride-sprite');
+  const documentHeight = document.body.scrollHeight;
+  const windowHeight = window.innerHeight;
+  const scrollableDistance = documentHeight - windowHeight;
+  
+  // Track if they've met for the first time
+  let hasMet = false;
+  let lastScrollY = window.scrollY;
+  
+  window.addEventListener('scroll', function() {
+    const currentScrollY = window.scrollY;
+    const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
+    lastScrollY = currentScrollY;
+    
+    const scrollProgress = Math.min(Math.max(currentScrollY / scrollableDistance, 0), 1);
+    
+    // Going down - approaching each other
+    if (scrollDirection === 'down' && !hasMet) {
+      // Calculate positions (meet at 90% of page)
+      const meetPoint = 0.9;
+      const approachProgress = Math.min(scrollProgress / meetPoint, 1);
+      
+      groom.style.top = `${20 + (30 * approachProgress)}%`;
+      bride.style.bottom = `${20 + (30 * approachProgress)}%`;
+      
+      // Rotation as they approach
+      const rotation = 5 * approachProgress;
+      groom.style.transform = `translateY(-50%)`;
+      bride.style.transform = `translateY(50%)`;
+      
+      // Check if they've met
+      if (approachProgress >= 1) {
+        hasMet = true;
+        // Snap to together position
+        groom.style.top = '50%';
+        bride.style.bottom = 'auto';
+        bride.style.top = '50%';
+        groom.style.transform = 'translateY(-50%) translateX(-20px)';
+        bride.style.transform = 'translateY(-50%) translateX(0px)';
+      }
+    }
+    // Going up - separating (only if not at top)
+    else if (scrollDirection === 'up' && scrollProgress > 0) {
+      // If they were together, start separating
+      if (hasMet) {
+        const separatePoint = 0.9;
+        const separateProgress = 1 - (Math.max(scrollProgress, separatePoint) - separatePoint) / (1 - separatePoint);
+        
+        groom.style.top = `${20 + (30 * separateProgress)}%`;
+        bride.style.bottom = `${20 + (30 * separateProgress)}%`;
+        
+        const rotation = 5 * separateProgress;
+        groom.style.transform = `translateY(-50%)`;
+        bride.style.transform = `translateY(50%)`;
+        
+        // If fully separated, reset hasMet
+        if (separateProgress <= 0) {
+          hasMet = false;
+        }
+      }
+    }
+    // When together (scrolling down after meeting)
+    else if (hasMet) {
+      // Keep them together
+      groom.style.top = '50%';
+      bride.style.top = '50%';
+      groom.style.transform = 'translateY(-50%) translateX(-20px)';
+      bride.style.transform = 'translateY(-50%) translateX(0px)';
+    }
+    
+    // Always fully visible
+    groom.style.opacity = 1;
+    bride.style.opacity = 1;
+  });
+  // ****************************************************
+  // End of sprites
+  // ****************************************************

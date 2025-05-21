@@ -853,3 +853,32 @@ footer {
   z-index: 3;
 }
 
+/* Sprites */
+.sprite-container-vertical {
+  position: fixed;
+  right: 20px; /* Adjust this value to move left/right */
+  top: 0;
+  height: 100vh;
+  width: 150px; /* Width of the animation area */
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.sprite-vertical {
+  position: absolute;
+  height: 60px; /* Smaller sprite size */
+  width: auto;
+  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  right: 0; /* Align to right side */
+}
+
+#groom-sprite {
+  top: 5%;
+  transform: translateY(-50%) translateX(0);
+  height: 70px;
+}
+
+#bride-sprite {
+  bottom: 5%;
+  transform: translateY(50%) translateX(0);
+}
