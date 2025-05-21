@@ -81,7 +81,7 @@ const firebaseConfig = {
     }
   });
   
-  // Función para generar QR (asegúrate de tenerla definida)
+  // Función para generar QR
   async function generateQRCode(containerId, data) {
     return new Promise((resolve) => {
       const container = document.getElementById(containerId);

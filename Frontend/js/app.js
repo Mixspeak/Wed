@@ -1,4 +1,4 @@
-AWS.config.region = 'us-east-1'; // Only region is needed in client code
+AWS.config.region = 'us-east-1';
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
   IdentityPoolId: 'us-east-1:7e8675ae-dbc4-4685-8620-81f78ae7ac20'
 });
@@ -129,8 +129,6 @@ function generateForecastDay(day) {
   `;
 }
 
-// Keep all your existing helper functions (formatDate, formatTime, capitalizeFirstLetter, getWeatherIcon)
-
 // Improved date/time formatting functions
 function formatDate(date, timezoneOffset) {
   // Create new date with timezone offset applied
@@ -182,6 +180,70 @@ function getWeatherIcon(weatherId, iconCode) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  /* ===========Parallax=============*/
+  /* ================================*/
+  // Optimized Parallax Class
+  class SmoothParallax {
+    constructor() {
+      this.containers = [];
+      this.lastScrollY = 0;
+      this.ticking = false;
+      
+      this.init();
+    }
+    
+    init() {
+      document.querySelectorAll('.parallax-container').forEach(container => {
+        this.containers.push({
+          element: container,
+          layers: container.querySelectorAll('.parallax-layer, .parallax-content'),
+          top: 0,
+          height: 0
+        });
+      });
+      
+      this.calculatePositions();
+      window.addEventListener('scroll', this.onScroll.bind(this));
+      window.addEventListener('resize', this.calculatePositions.bind(this));
+    }
+    
+    calculatePositions() {
+      this.containers.forEach(container => {
+        const rect = container.element.getBoundingClientRect();
+        container.top = rect.top + window.scrollY;
+        container.height = rect.height;
+      });
+    }
+    
+    onScroll() {
+      this.lastScrollY = window.scrollY;
+      
+      if (!this.ticking) {
+        requestAnimationFrame(this.update.bind(this));
+        this.ticking = true;
+      }
+    }
+    
+    update() {
+      this.containers.forEach(container => {
+        const scrollY = this.lastScrollY;
+        const viewportHeight = window.innerHeight;
+        
+        if (scrollY + viewportHeight > container.top && 
+            scrollY < container.top + container.height) {
+          const scrolled = scrollY - container.top;
+          
+          container.layers.forEach(layer => {
+            const speed = parseFloat(layer.getAttribute('data-speed')) || 0;
+            const offset = scrolled * speed;
+            layer.style.transform = `translateY(${offset}px)`;
+          });
+        }
+      });
+      
+      this.ticking = false;
+    }
+  }
   new SmoothParallax();
   fetchWeather();
   // Set your wedding details here
@@ -215,9 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // Initialize based on default selection
-  document.querySelector('input[name="attendance"][value="yes"]').dispatchEvent(new Event('change'));
-});
+ 
 
 function downloadICS(details) {
   // Generate the ICS file content
@@ -271,70 +331,7 @@ function formatDateForICS(date) {
     .replace('T', '');
 }
 
-/* ===========Parallax=============*/
-/* ================================*/
-// Optimized Parallax Class
-class SmoothParallax {
-  constructor() {
-    this.containers = [];
-    this.lastScrollY = 0;
-    this.ticking = false;
-    
-    this.init();
-  }
-  
-  init() {
-    document.querySelectorAll('.parallax-container').forEach(container => {
-      this.containers.push({
-        element: container,
-        layers: container.querySelectorAll('.parallax-layer, .parallax-content'),
-        top: 0,
-        height: 0
-      });
-    });
-    
-    this.calculatePositions();
-    window.addEventListener('scroll', this.onScroll.bind(this));
-    window.addEventListener('resize', this.calculatePositions.bind(this));
-  }
-  
-  calculatePositions() {
-    this.containers.forEach(container => {
-      const rect = container.element.getBoundingClientRect();
-      container.top = rect.top + window.scrollY;
-      container.height = rect.height;
-    });
-  }
-  
-  onScroll() {
-    this.lastScrollY = window.scrollY;
-    
-    if (!this.ticking) {
-      requestAnimationFrame(this.update.bind(this));
-      this.ticking = true;
-    }
-  }
-  
-  update() {
-    this.containers.forEach(container => {
-      const scrollY = this.lastScrollY;
-      const viewportHeight = window.innerHeight;
-      
-      if (scrollY + viewportHeight > container.top && 
-          scrollY < container.top + container.height) {
-        const scrolled = scrollY - container.top;
-        
-        container.layers.forEach(layer => {
-          const speed = parseFloat(layer.getAttribute('data-speed')) || 0;
-          const offset = scrolled * speed;
-          layer.style.transform = `translateY(${offset}px)`;
-        });
-      }
-    });
-    
-    this.ticking = false;
-  }
-}
+
 
   // ******************************************
   // Sprites
@@ -417,3 +414,4 @@ class SmoothParallax {
   // ****************************************************
   // End of sprites
   // ****************************************************
+})
