@@ -335,3 +335,5 @@ class SmoothParallax {
     this.ticking = false;
   }
 }
+
+

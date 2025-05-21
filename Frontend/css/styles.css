@@ -28,7 +28,7 @@ h1, h2, h3 {
 .container {
   max-width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  /*padding: 20px;*/
   background-color: #FFFFFF;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
@@ -852,3 +852,4 @@ footer {
   background-position: bottom;
   z-index: 3;
 }
+
