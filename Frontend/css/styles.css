@@ -585,6 +585,23 @@ footer {
 
 .hotel-image {
   width: 40%;
+  position: relative; /* Necesario para posicionar el logo de forma absoluta */
+  overflow: hidden; /* Evita que el logo se salga del contenedor */
+}
+
+.hotel-logo {
+  position: absolute;
+  top: 40%;
+  left: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hotel-logo img {
+  max-width: 80%; /* Controla el tamaño máximo del logo (ajusta según necesidad) */
+  max-height: 80%; /* Evita que el logo se salga del contenedor */
+  object-fit: contain; /* Mantiene la proporción sin recortar */
 }
 
 .hotel-image img {
