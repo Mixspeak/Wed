@@ -785,9 +785,9 @@ footer {
   will-change: transform;
 }
 
-/* Background Layer (pareja sombras) */
+/* Background Layer (mano anillo) */
 .background-layer {
-  background-image: url('https://wed-fotos.s3.amazonaws.com/1747759138272-1000085563.jpg');
+  background-image: url('../images/mano-ring.jpg');
   z-index: 1;
 }
 
@@ -800,7 +800,7 @@ footer {
   z-index: 2;
 }
 
-/* Foreground Layer (mano anillo) */
+/* Foreground Layer (sombra) */
 .foreground-layer {
   background-image: url('https://images.unsplash.com/photo-1676326761239-d8e6c173b85b?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
   background-size: contain;
