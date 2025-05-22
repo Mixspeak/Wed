@@ -260,25 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('download-ics').addEventListener('click', function() {
     downloadICS(weddingDetails);
   });
-
-  const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
-  const guestDetails = document.getElementById('guest-details');
-  
-  // Show/hide guest details based on attendance selection
-  attendanceRadios.forEach(radio => {
-    radio.addEventListener('change', function() {
-      if (this.value === 'yes') {
-        guestDetails.style.display = 'block';
-        document.getElementById('guests').setAttribute('required', '');
-      } else {
-        guestDetails.style.display = 'block';
-        document.getElementById('guests').removeAttribute('required');
-      }
-    });
-  });
-  
  
-
 function downloadICS(details) {
   // Generate the ICS file content
   const icsContent = [
