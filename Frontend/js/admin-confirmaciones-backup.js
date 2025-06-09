@@ -82,14 +82,14 @@ async function loadConfirmations(filter = 'all', search = '') {
     
     confirmationItem.innerHTML = `
     <h3>${data.nombre || 'Sin nombre'}</h3>
-    <p><i class="fas fa-envelope"></i> ${data.telefono || 'sin teléfono'}</p>
+    <p><i class="fas fa-envelope"></i> ${data.email || 'sin@email.com'}</p>
     <p><i class="fas fa-users"></i> ${data.asistentes || 0} asistentes</p>
     <p><i class="fas fa-calendar"></i> ${fecha}</p>
     <div class="confirmation-actions">
         <button data-id="${id}" class="toggle-valid ${data.valido ? 'gold-button' : 'gold-button outline'}">
         ${data.valido ? 'Válido' : 'No válido'}
         </button>
-        <button data-id="${id}" class="send-whatsapp gold-button">
+        <button data-id="${id}" class="send-email gold-button">
         <i class="fas fa-paper-plane"></i> Enviar QR
         </button>
         <button data-id="${id}" class="delete-btn gold-button danger">
@@ -99,37 +99,6 @@ async function loadConfirmations(filter = 'all', search = '') {
     `;
     
     container.appendChild(confirmationItem);
-  }
-  
-  // Función simplificada para enviar QR por WhatsApp
-  async function sendQRByWhatsApp(e) {
-    const id = e.target.getAttribute('data-id');
-    const button = e.target;
-    
-    try {
-      // Obtener datos de la confirmación
-      const doc = await db.collection('confirmaciones').doc(id).get();
-      if (!doc.exists) throw new Error('Confirmación no encontrada');
-      
-      const data = doc.data();
-      if (!data.telefono) throw new Error('No hay número de teléfono registrado');
-      
-      // Generar texto para el mensaje
-      const messageText = `Hola ${data.nombre}, aquí está tu código QR para el evento:\n\n` +
-                        `*Evento:* Mi Boda\n` +
-                        `*Asistentes:* ${data.asistentes}\n` +
-                        `*Código:* ${id}`;
-      
-      // Formatear número de teléfono (eliminar todo excepto números)
-      const telefono = data.telefono.replace(/\D/g, '');
-      
-      // Abrir WhatsApp con el mensaje
-      window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(messageText)}&image=${encodeURIComponent(qrData)}`, '_blank');
-      
-    } catch (error) {
-      console.error("Error al preparar WhatsApp:", error);
-      alert(`Error: ${error.message}`);
-    }
   }
   
   // Función para mostrar errores
@@ -232,7 +201,7 @@ document.getElementById('validate-btn').addEventListener('click', () => {
         <div class="validation-success">
           <h3>Invitación ${data.valido ? 'VÁLIDA' : 'NO VÁLIDA'}</h3>
           <p><strong>Nombre:</strong> ${data.nombre}</p>
-          <p><strong>Teléfono:</strong> ${data.telefono}</p>
+          <p><strong>Email:</strong> ${data.email}</p>
           <p><strong>Asistentes:</strong> ${data.asistentes}</p>
           <p><strong>Fecha confirmación:</strong> ${data.fecha.toDate().toLocaleString()}</p>
           <button class="gold-button toggle-valid" data-id="${doc.id}">
@@ -339,7 +308,6 @@ function handleQRUpload(event) {
     }
   };
   
-  
   img.src = URL.createObjectURL(file);
 }
 
@@ -363,7 +331,7 @@ function validateQRCode(qrData) {
         const resultHTML = `
           <h3>Invitación Válida</h3>
           <p><strong>Nombre:</strong> ${confirmation.nombre}</p>
-          <p><strong>Teléfono:</strong> ${confirmation.telefono}</p>
+          <p><strong>Email:</strong> ${confirmation.email}</p>
           <p><strong>Asistentes:</strong> ${confirmation.asistentes}</p>
           <p><strong>Estado:</strong> ${confirmation.valido ? '✅ Válido' : '❌ No válido'}</p>
           <button class="gold-button toggle-valid" data-id="${doc.id}">

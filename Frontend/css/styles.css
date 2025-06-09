@@ -37,6 +37,7 @@ h1, h2, h3 {
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="number"],
+.form-group input[type="phone"],
 .form-group textarea {
   width: 80%;
   padding: 15px 20px;
