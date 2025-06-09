@@ -105,7 +105,7 @@ const firebaseConfig = {
     });
   }
   
-  // Función para generar ID único (asegúrate de tenerla)
+  // Función para generar ID único
   function generateUniqueId() {
     return 'xxxx-xxxx-4xxx-yxxx'.replace(/[xy]/g, function(c) {
       const r = Math.random() * 16 | 0;
