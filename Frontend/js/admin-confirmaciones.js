@@ -82,8 +82,9 @@ async function loadConfirmations(filter = 'all', search = '') {
     
     confirmationItem.innerHTML = `
     <h3>${data.nombre || 'Sin nombre'}</h3>
-    <p><i class="fas fa-envelope"></i> ${data.telefono || 'sin teléfono'}</p>
+    <p><i class="fas fa-phone"></i> ${data.telefono || 'sin teléfono'}</p>
     <p><i class="fas fa-users"></i> ${data.asistentes || 0} asistentes</p>
+    <p><i class="fas fa-envelope"></i><strong>Mensaje:</strong> ${data.mensaje}</p>
     <p><i class="fas fa-calendar"></i> ${fecha}</p>
     <div class="confirmation-actions">
         <button data-id="${id}" class="toggle-valid ${data.valido ? 'gold-button' : 'gold-button outline'}">

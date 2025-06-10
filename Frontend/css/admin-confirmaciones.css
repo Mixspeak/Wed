@@ -55,11 +55,11 @@
   }
   
   .confirmation-card.valid {
-    border-left: 4px solid #1DB954;
+    border-left: 35px solid #1DB954;
   }
   
   .confirmation-card.invalid {
-    border-left: 4px solid #E60023;
+    border-left: 35px solid #E60023;
   }
   
   .confirmation-card h3 {
@@ -77,6 +77,7 @@
   .confirmation-card p i {
     width: 20px;
     color: #D4AF37;
+    margin-right: 30px;
   }
   
   .confirmation-actions {
@@ -189,7 +190,7 @@
   /* Estilos para tablets */
   @media (min-width: 769px) and (max-width: 1024px) {
     .confirmations-grid {
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 12fr));
     }
     
     .confirmation-actions {
@@ -386,3 +387,4 @@
     from { opacity: 1; }
     to { opacity: 0; }
   }
+  
