@@ -51,9 +51,9 @@ async function loadConfirmations(filter = 'all', search = '') {
         // Aplicar búsqueda si hay término
         if (searchTerm) {
           const nombre = data.nombre?.toLowerCase() || '';
-          const email = data.email?.toLowerCase() || '';
+          const telefono = data.telefono?.toLowerCase() || '';
           
-          if (!nombre.includes(searchTerm) && !email.includes(searchTerm)) {
+          if (!nombre.includes(searchTerm) && !telefono.includes(searchTerm)) {
             return;
           }
         }
@@ -101,36 +101,96 @@ async function loadConfirmations(filter = 'all', search = '') {
     container.appendChild(confirmationItem);
   }
   
-  // Función simplificada para enviar QR por WhatsApp
   async function sendQRByWhatsApp(e) {
     const id = e.target.getAttribute('data-id');
     const button = e.target;
     
     try {
-      // Obtener datos de la confirmación
+      // Mostrar estado de carga
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando...';
+      button.disabled = true;
+      
+      // 1. Obtener datos de la confirmación
       const doc = await db.collection('confirmaciones').doc(id).get();
       if (!doc.exists) throw new Error('Confirmación no encontrada');
       
       const data = doc.data();
       if (!data.telefono) throw new Error('No hay número de teléfono registrado');
       
-      // Generar texto para el mensaje
-      const messageText = `Hola ${data.nombre}, aquí está tu código QR para el evento:\n\n` +
-                        `*Evento:* Mi Boda\n` +
-                        `*Asistentes:* ${data.asistentes}\n` +
-                        `*Código:* ${id}`;
+      // 2. Verificar si tenemos URL del QR
+      if (!data.qrImageUrl) {
+        throw new Error('No se encontró la imagen QR en Storage');
+      }
       
-      // Formatear número de teléfono (eliminar todo excepto números)
+      // 3. Generar mensaje para WhatsApp
+      const messageText = `Hola ${data.nombre}, aquí está tu confirmación para el evento:\n\n` +
+                        `*Evento:* Mi Boda\n` +
+                        `*Asistentes:* ${data.asistentes || 1}\n\n` +
+                        `Por favor muestra este QR al llegar al evento:`;
+      
+      // 4. Formatear número de teléfono
       const telefono = data.telefono.replace(/\D/g, '');
       
-      // Abrir WhatsApp con el mensaje
-      window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(messageText)}&image=${encodeURIComponent(qrData)}`, '_blank');
+      // 5. Crear página temporal con el QR
+      const tempPageUrl = await createTempQRPage(data.qrImageUrl, messageText, data.nombre);
+      
+      // 6. Abrir WhatsApp con instrucciones
+      const whatsappUrl = `https://wa.me/${telefono}?text=${encodeURIComponent(
+        `${messageText}\n\n` +
+        `Descarga tu QR aquí: ${tempPageUrl}\n\n` +
+        `O copia esta URL y ábrela en tu navegador para ver el QR: ${data.qrImageUrl}`
+      )}`;
+      
+      window.open(whatsappUrl, '_blank');
       
     } catch (error) {
-      console.error("Error al preparar WhatsApp:", error);
+      console.error("Error al enviar por WhatsApp:", error);
       alert(`Error: ${error.message}`);
+    } finally {
+      // Restaurar botón
+      if (button) {
+        button.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar QR';
+        button.disabled = false;
+      }
     }
+}
+
+// Función auxiliar para crear página temporal con el QR
+async function createTempQRPage(qrImageUrl, message, nombre) {
+  try {
+    // Subir una página HTML temporal a Firebase Storage
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>QR para ${nombre}</title>
+        <meta property="og:title" content="Tu QR para el evento">
+        <meta property="og:description" content="${message}">
+        <meta property="og:image" content="${qrImageUrl}">
+        <meta property="og:url" content="${qrImageUrl}">
+        <style>
+          body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+          img { max-width: 100%; height: auto; margin: 20px 0; }
+        </style>
+      </head>
+      <body>
+        <h1>QR para ${nombre}</h1>
+        <img src="${qrImageUrl}" alt="Código QR">
+        <p>${message}</p>
+      </body>
+      </html>
+    `;
+    
+    const storageRef = storage.ref();
+    const tempPageRef = storageRef.child(`temp_pages/qr_${Date.now()}.html`);
+    await tempPageRef.putString(htmlContent, 'raw');
+    return await tempPageRef.getDownloadURL();
+    
+  } catch (error) {
+    console.error("Error creando página temporal:", error);
+    return qrImageUrl; // Fallback a la URL directa de la imagen
   }
+}
   
   // Función para mostrar errores
   function showError(error) {
@@ -155,6 +215,15 @@ async function loadConfirmations(filter = 'all', search = '') {
     const filter = e.target.value;
     const searchTerm = document.getElementById('search-input').value;
     loadConfirmations(filter, searchTerm);
+  });
+
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.send-whatsapp')) {
+      sendQRByWhatsApp(e);
+    }
+    if (e.target.closest('.toggle-valid')) {
+      toggleValidStatus(e);
+    }
   });
   
   function showError(error) {
@@ -202,14 +271,6 @@ function toggleValidStatus(e) {
   });
 }
 
-function sendQRCode(e) {
-  const id = e.target.getAttribute('data-id');
-  
-  // Aquí implementarías el envío del correo
-  // En un entorno real usarías un servicio como EmailJS o SendGrid
-  alert(`Se enviará el QR al invitado con ID: ${id}\n\nEn un entorno real, esto enviaría un correo con el QR adjunto.`);
-}
-
 // Validar código QR manualmente
 document.getElementById('validate-btn').addEventListener('click', () => {
   const qrInput = document.getElementById('qr-input').value.trim();
@@ -249,9 +310,6 @@ document.getElementById('validate-btn').addEventListener('click', () => {
       resultDiv.innerHTML = '<p class="error">Error al validar invitación</p>';
     });
 });
-
-// Instalar la librería necesaria (agrega esto al head)
-// <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 
 let scannerActive = false;
 let videoElement;
