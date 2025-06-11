@@ -15,7 +15,6 @@
   }
   
   .admin-section h2 {
-    font-family: 'Playfair Display', serif;
     color: #333;
     margin-top: 0;
     padding-bottom: 10px;
@@ -199,6 +198,15 @@
     
     .gold-button {
       width: 100%;
+      font-size: xx-large;
+    }
+
+    input, select {
+      font-size: xx-large;
+    }
+
+    h2 {
+      font-size: x-large !important;
     }
   }
   

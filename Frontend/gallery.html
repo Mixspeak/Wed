@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Álbum del Evento</title>
+  <link rel="stylesheet" href="css/gallery.css">
   <link rel="stylesheet" href="css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -26,6 +27,16 @@
         <label for="file-input" class="gold-button">
           <i class="fas fa-cloud-upload-alt"></i> Seleccionar Archivos
         </label>
+        <!-- Contenedor de previsualización -->
+        <div id="file-preview" class="file-preview-container"></div>
+        
+        <!-- Barra de progreso -->
+        <div class="progress-container" style="display: none;">
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+          </div>
+          <div class="progress-text">0%</div>
+        </div>
         <button id="upload-button" class="gold-button outline">
           <i class="fas fa-paper-plane"></i> Subir
         </button>
