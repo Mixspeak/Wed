@@ -424,9 +424,9 @@ function validateQRCode(qrData) {
           <p><strong>Nombre:</strong> ${confirmation.nombre}</p>
           <p><strong>Teléfono:</strong> ${confirmation.telefono}</p>
           <p><strong>Asistentes:</strong> ${confirmation.asistentes}</p>
-          <p><strong>Estado:</strong> ${confirmation.valido ? '✅ Válido' : '❌ No válido'}</p>
+          <p><strong>Estado:</strong> ${confirmation.valido ? '✅ Confirmado' : '❌ No confirmado'}</p>
           <button class="gold-button toggle-valid" data-id="${doc.id}">
-            ${confirmation.valido ? 'Invalidar' : 'Validar'}
+            ${confirmation.valido ? 'Invalidar' : 'Confirmar'}
           </button>
         `;
         
