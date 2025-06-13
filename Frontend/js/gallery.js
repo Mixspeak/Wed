@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function setupFilePreview() {
   fileInput.addEventListener('change', function() {
     filePreview.innerHTML = '';
-    
+
     if (this.files.length === 0) return;
     
     Array.from(this.files).forEach((file, index) => {
@@ -87,6 +87,21 @@ function setupFilePreview() {
     }
   });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.querySelector('input[type="file"]'); // Asegúrate de seleccionar tu input de archivos
+    const filePreview = document.getElementById('file-preview');
+
+    if (fileInput && filePreview) {
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                filePreview.style.display = 'block'; // Muestra el preview si hay archivos
+            } else {
+                filePreview.style.display = 'none'; // Oculta el preview si no hay archivos
+            }
+        });
+    }
+});
 
 function removeFileFromList(index) {
   const dt = new DataTransfer();

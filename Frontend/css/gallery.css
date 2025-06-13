@@ -344,3 +344,7 @@
   transform: scale(1.05);
   transition: transform 0.2s ease;
 }
+
+.file-preview-container {
+    display: none; /* Oculta inicialmente el contenedor */
+}
