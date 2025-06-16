@@ -5,6 +5,6 @@ frontend:
       commands:
         - cd frontend && npm install
   artifacts:
-    baseDirectory: /
+    baseDirectory: /frontend
     files:
       - '**/*'
