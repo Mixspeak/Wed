@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <title>Intercambio Navideño</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>¡Regístrate para el Intercambio Navideño!</h1>
+        
+        <div id="registro-form">
+            <div class="form-group">
+                <label for="nombre">Tu Nombre:</label>
+                <input type="text" id="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Tu Teléfono (WhatsApp):</label>
+                <input type="tel" id="telefono" required>
+            </div>
+            <div id="participantes-adicionales">
+                <!-- Se agregarán dinámicamente campos para más participantes -->
+            </div>
+            <button id="agregar-participante">Agregar otra persona</button>
+            <button id="enviar-registro">Enviar Registro</button>
+        </div>
+        
+        <div id="mensaje-exito" class="hidden">
+            <p>¡Registro exitoso! Te notificaremos cuando se realice el sorteo.</p>
+        </div>
+        
+        <div id="registros-cerrados" class="hidden">
+            <p>Lo sentimos, los registros para el intercambio navideño están cerrados.</p>
+        </div>
+    </div>
+    
+    <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

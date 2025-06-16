@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Intercambio Navideño</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Administración del Intercambio</h1>
+        
+        <div class="admin-section">
+            <h2>Estado de Registros</h2>
+            <label>
+                <input type="checkbox" id="cerrar-registros">
+                Cerrar registros
+            </label>
+        </div>
+        
+        <div class="admin-section">
+            <h2>Participantes Registrados</h2>
+            <div id="lista-participantes"></div>
+            <button id="realizar-sorteo">Realizar Sorteo</button>
+        </div>
+        
+        <div class="admin-section">
+            <h2>Resultados del Sorteo</h2>
+            <div id="resultados-sorteo"></div>
+            <button id="enviar-resultados">Enviar Resultados por WhatsApp</button>
+        </div>
+    </div>
+    
+    <script src="../js/admin.js"></script>
+</body>
+</html>
