@@ -1,6 +1,3 @@
-// Inicializa Firebase
-firebase.initializeApp(firebaseConfig);
-
 document.getElementById('login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     

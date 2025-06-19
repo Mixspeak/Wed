@@ -1,7 +1,3 @@
-// Inicializa Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
 document.addEventListener('DOMContentLoaded', function() {
     // Verificar autenticación
     firebase.auth().onAuthStateChanged(user => {

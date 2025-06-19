@@ -1,23 +1,3 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyD2yQFJGybiGa-sJEwJeHDSkxm6b21szhk",
-  authDomain: "intercambios-navidenos.firebaseapp.com",
-  projectId: "intercambios-navidenos",
-  storageBucket: "intercambios-navidenos.firebasestorage.app",
-  messagingSenderId: "453471770714",
-  appId: "1:453471770714:web:506bde9accb046ae82a063"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
-const storage = firebase.storage(); 
-
-// Espera a que el DOM esté completamente cargado
-document.addEventListener('DOMContentLoaded', function() {
-  // Ahora puedes usar db de forma segura
-  checkRegistroStatus();
-});
-
 // Función mejorada para registrar participantes
 async function registrarParticipantes(participantes) {
   try {
@@ -47,13 +27,24 @@ async function registrarParticipantes(participantes) {
 
 // Verificar estado de registros al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
-    checkRegistroStatus();
+    //checkRegistroStatus();
     setupFormHandlers();
 });
 
 async function checkRegistroStatus() {
     try {
-        // Fuerza conexión con el servidor y tiempo de espera
+        // Verificar si Firebase está inicializado
+        if (!firebase.apps.length) {
+            throw new Error("Firebase no está inicializado");
+        }
+        
+        // Intenta una operación simple
+        await db.collection('test').doc('test').get({ 
+            source: 'server', 
+            timeout: 5000 
+        });
+        
+        // Luego verifica el estado de registros
         const doc = await db.collection('config').doc('intercambio')
             .get({ source: 'server', timeout: 5000 });
             
@@ -65,18 +56,13 @@ async function checkRegistroStatus() {
             }
         }
     } catch (error) {
-        console.error("Error detallado:", {
-            code: error.code,
-            message: error.message,
-            stack: error.stack
-        });
+        console.error("Error en checkRegistroStatus:", error);
         
-        // Manejo específico para errores de conexión
-        if (error.code === 'unavailable' || error.message.includes('400')) {
-            showError("Problema de conexión. Intenta recargar la página.");
-            // Intenta reconectar
-            setTimeout(checkRegistroStatus, 3000);
-        }
+        // Mostrar mensaje al usuario
+        showError("No se pudo conectar con el servidor. Intenta recargar la página.");
+        
+        // Intentar reconectar después de 5 segundos
+        setTimeout(checkRegistroStatus, 5000);
     }
 }
 
