@@ -1,175 +1,307 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Invitación | Irving & Evelyn</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Irving & Evelyn — Invitación</title>
   <link rel="icon" type="image/x-icon" href="images/favicon.png">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/home.css">
   <link rel="stylesheet" href="css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script type="text/javascript" src="https://assets.pinterest.com/js/pinit.js"></script>
   <script src="js/aws-sdk.min.js"></script>
   <script src="js/aws-amplify.min.js"></script>
+  <meta name="description" content="Invitación de boda de Irving y Evelyn" />
 </head>
+
 <body>
+
+<header>
+  <div class="nav">Irving & Evelyn</div>
+</header>
+
+<main>
+
+    
+<!-- ============================================
+     HERO — SOBRE DE CARTA VERDE CON SELLO DORADO
+============================================= -->
+<section id="home" class="envelope-wrapper">
+  
+  <div class="envelope">
+    <!--<div class="envelope-flap"></div>
+    <div class="envelope-body"></div>-->
+
+    <!-- Sello circular dorado -->
+    <div class="seal"></div>
+
+    <!-- Contenido dentro del sobre -->
+    <div class="envelope-content">
+      <div class="date">Sábado, 18 de Abril • 2026</div>
+
+      <h1 class="title">Irving & Evelyn</h1>
+
+      <!--<p class="subtitle">
+        Nos casamos. Acompáñanos a celebrar una historia que apenas comienza.
+      </p>
+
+      <div class="cta-row">
+        <button class="btn primary" data-scroll-to="#rsvp">Confirmar asistencia</button>
+        <a class="btn" href="#info">Ver detalles</a>
+      </div>-->
+    </div>
+  </div>
+
+</section>
+
+<section class="story">
+    <div class="container">
+        <div class="row">
+            <div class="col-text reveal">
+                <p class="subtitle">
+                    Nos casamos. Acompáñanos a celebrar una historia que apenas comienza.
+                </p>
+                <div class="cta-row">
+                    <button class="btn primary" data-scroll-to="#rsvp">Confirmar asistencia</button>
+                    <a class="btn" href="#detalles">Ver detalles</a>
+                </div>
+            </div>
+        </div> 
+    </div>
+</section>
+
+<!-- ==========================================================
+     HISTORIA
+========================================================== -->
+<section class="story" id="story1">
   <div class="container">
-    <!-- Header con título y subtítulo -->
-    <header>
-      <h1>Irving & Evelyn</h1>
-      <p class="subtitle">15 de Mayo de 2026 • Hotel Agua Blanca, Jungapeo Michoacán</p>
-    </header>
-
-    <section id="galeria" class="polaroid-gallery">
-      <div class="polaroid-container">
-        <!-- Foto 1 -->
-        <div class="polaroid">
-          <img src="https://wed-fotos.s3.amazonaws.com/1747759138272-1000085563.jpg" alt="Descripción imagen 1">
-        </div>
-        
-        <!-- Foto 2 -->
-        <div class="polaroid">
-          <img src="https://images.unsplash.com/reserve/Af0sF2OS5S5gatqrKzVP_Silhoutte.jpg?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Descripción imagen 2">
-        </div>
-        
-        <!-- Foto 3 -->
-        <div class="polaroid">
-          <img src="https://images.unsplash.com/photo-1676326761239-d8e6c173b85b?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Descripción imagen 3">
-        </div>
-        
-        <!-- Foto 4 -->
-        <div class="polaroid">
-          <img src="https://wed-fotos.s3.amazonaws.com/1747349046759-1000080555.jpg" alt="Descripción imagen 4">
-        </div>
-        
-        <!-- Añade más fotos según necesites -->
+    <div class="row">
+      <div class="col-text reveal">
+        <h2></h2>
+        <p></p>
       </div>
-    </section>
-
-    <!-- Sección de detalles del evento -->
-    <section class="event-details">
-      <div class="detail-card">
-        <i class="fas fa-calendar-alt icon-gold"></i>
-        <h2>Fecha</h2>
-        <p>15 de Mayo, 2026</p>
-        <p class="highlight">4:30 PM</p>
-        <div class="calendar-download">
-          <h3 id="download-ics"><i class="far fa-calendar-alt"></i> Añadir a Calendario</h3>
-        </div>
+      <div class="col-media card parallax reveal">
+        <img src="images/Jungapeo-letras.png" class="photo">
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <!-- Sección de lugar del evento -->
-    <section class="parallax-container">
-      <i class="fas fa-map-marker-alt icon-gold"></i>
-      <div class="parallax-layer background-layer-lugar" data-speed="0.1"></div>
-      <!--<div class="parallax-layer middleground-layer-lugar" data-speed="0.3"></div>-->
-      <div class="parallax-layer foreground-layer-lugar" data-speed="0.5"></div>
-      <div class="parallax-content" data-speed="0.8">
-        <h2>Hotel Agua Blanca</h2>
-        <p>Jungapeo Michoacán</p>
-      </div>
-    </section>
+<!-- ==========================================================
+     RSVP
+========================================================== -->
+<section class="story" id="rsvp">
+  <div class="container">
+    <div class="row">
+      <div class="col-text reveal">
+        <h2>Confirma tu asistencia</h2>
+        <p>Por favor indícanos si vendrás y cuántas personas te acompañarán.</p>
 
-      <!-- Add this in your HTML where you want the accommodation section -->
-      <section class="detal-card">
-        <h2 style="text-align: center;"><i class="fas fa-hotel"></i> Alojamiento Recomendado</h2>
-        <div class="accommodation-container">
-          <!-- Hotel Aguablanca Direct Link -->
-          <div class="hotel-card">
-            <div class="hotel-image">
-              <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/ae/30/de/dentro-de-una-canada.jpg?w=900&h=500&s=1" alt="Hotel Aguablanca">
-              <div class="hotel-logo">
-                <img src="https://lirp.cdn-website.com/58af03ae/dms3rep/multi/opt/Logo+Agua+blanca+Horizontal+blanco-02-235w.png" alt="Logo Aguablanca">
-              </div>
+        <div class="card" style="margin-top:16px">
+          <form class="rsvp" id="rsvpForm">
+            <input type="text" name="name" placeholder="Nombre completo" required>
+            <select name="attend" required>
+              <option value="">¿Asistirás?</option>
+              <option value="yes">Sí, asistiré</option>
+              <option value="no">No podré asistir</option>
+            </select>
+            <input type="number" name="guests" min="0" max="10" placeholder="Número de acompañantes" value="0">
+            <textarea name="notes" rows="3" placeholder="Notas / restricciones alimentarias (opcional)"></textarea>
+            <div style="display:flex;gap:8px;justify-content:flex-end">
+              <button class="btn" type="reset">Limpiar</button>
+              <button class="btn primary" type="submit">Enviar RSVP</button>
             </div>
-            <div class="hotel-info">
-              <h3>Hotel Aguablanca</h3>
-              <p class="hotel-description">Un encantador hotel con vistas espectaculares y todas las comodidades para tu estancia.</p>
-              <div class="hotel-actions">
-                <a href="https://www.aguablanca.mx/" target="_blank" class="gold-button">
-                  <i class="fas fa-external-link-alt"></i> Visitar Sitio Web
-                </a>
-              </div>
-            </div>
-          </div>
+          </form>
         </div>
-      </section>
-      
-      <div class="detail-card">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     DETALLES - CALENDARIO
+========================================================== -->
+<section id="detalles" class="detalles-section">
+
+  <p class="detalles-intro">
+    Con la bendición de Dios y nuestros padres,<br>
+    tenemos el honor de invitarles a nuestra boda religiosa
+  </p>
+
+  <!-- Fecha grande -->
+  <div class="fecha-block">
+    <div class="mes">ABRIL</div>
+    <div class="fecha-grid">
+      <span class="fecha-lado">SÁBADO</span>
+      <span class="fecha-dia">18</span>
+      <span class="fecha-lado">2026</span>
+    </div>
+  </div>
+
+  <!-- Contador -->
+  <div class="countdown-wrapper">
+    <div class="faltan">FALTAN</div>
+
+    <div id="countdown" class="countdown">
+      <div><span id="dias">00</span><small>Días</small></div>
+      <div><span id="horas">00</span><small>Horas</small></div>
+      <div><span id="minutos">00</span><small>Min</small></div>
+      <div><span id="segundos">00</span><small>Seg</small></div>
+    </div>
+  </div>
+
+  <!-- Calendario -->
+  <div class="calendar-block">
+    <div class="gran-dia">EL GRAN DÍA</div>
+    <div class="gran-dia-mes">ABRIL 2025</div>
+
+    <div class="calendar">
+      <div class="week">LUN MAR MIE JUE VIE SAB DOM</div>
+      <div class="days">
+        <span></span><span></span><span>1</span><span>2</span>
+        <span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+        <span>10</span><span>11</span><span>12</span><span>13</span>
+        <span>14</span>
+        <span>15</span><span>16</span>
+        <span>17</span><span class="heart">18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span>
+        <span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ==========================================================
+     ITINERARIO
+========================================================== -->
+<section id="itinerario" class="timeline-section">
+  <h2 class="timeline-title">Itinerario del Día</h2>
+
+  <div class="timeline">
+
+    <!-- Evento 1 -->
+    <div class="timeline-item reveal-story">
+      <div class="timeline-icon"><img src="https://cdn-icons-png.flaticon.com/512/2750/2750164.png"></div>
+      <div class="timeline-content left">
+        <h3>3:00 PM <br> Ceremonia</h3>
+      </div>
+    </div>
+
+    <!-- Evento 2 -->
+    <div class="timeline-item reveal-story">
+      <div class="timeline-icon"><img src="https://cdn-icons-png.flaticon.com/512/10230/10230428.png"></div>
+      <div class="timeline-content right">
+        <h3>4:30 PM <br> Sesión de Fotos</h3>
+      </div>
+    </div>
+
+    <!-- Evento 3 -->
+    <div class="timeline-item reveal-story">
+      <div class="timeline-icon"><img src="https://cdn-icons-png.flaticon.com/512/1161/1161670.png"></div>
+      <div class="timeline-content left">
+        <h3>5:00 PM <br> Recepción</h3>
+        <p>Comida, música y celebración en un ambiente inolvidable.</p>
+      </div>
+    </div>
+
+    <!-- Evento 4 -->
+    <div class="timeline-item reveal-story">
+      <div class="timeline-icon"><img src="https://cdn-icons-png.flaticon.com/512/7779/7779711.png"></div>
+      <div class="timeline-content right">
+        <h3>8:00 PM <br> Fiesta</h3>
+        <p>Abrimos la pista para bailar y celebrar toda la noche.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==========================================================
+     CÓDIGO VESTIMENTA
+========================================================== -->
+
+<section id="vestimenta">
+    <div class="detail-card container">
         <i class="fas fa-tshirt icon-gold"></i>
         <h2>Código</h2>
         <p>Elegante Formal</p>
-        <p class="highlight">Tonos Neutros</p>
-        <a data-pin-do="embedBoard" href="https://www.pinterest.com/anapinskywalker/style/"></a>
+        <a data-pin-do="embedPin" href="https://mx.pinterest.com/pin/7810999348109140/"></a>
         <a data-pin-do="embedBoard" href="https://mx.pinterest.com/thriftedoutfit/carrie-bradshaw-outfits/"></a>
+    </div>
+</section>
+
+<!-- ==========================================================
+     WIDGET CLIMA
+========================================================== -->
+<section class="weather-widget">
+    <h2><i class="fas fa-cloud-sun"></i> Clima Pronosticado</h2>
+    <div id="weather-data">
+    <p>Cargando...</p>
+    </div>
+</section>
+
+
+<!-- ==========================================================
+     GALERÍA
+========================================================== -->
+<section class="story" id="gallery">
+  <div class="container">
+    <div class="row">
+      <div class="col-text reveal">
+        <h2>Galería</h2>
+        <p>Subiremos fotos después del evento.</p>
       </div>
-    </section>
-
-    <!-- Widget de clima (integrado) -->
-    <section class="weather-widget">
-      <h2><i class="fas fa-cloud-sun"></i> Clima Pronosticado</h2>
-      <div id="weather-data">
-        <p>Cargando...</p>
+      <div class="col-media reveal">
+        <div class="card">
+            <a href="gallery.html" class="gold-button outline">
+                <i class="fas fa-camera"></i> Ver Álbum
+            </a>
+        </div>
       </div>
-    </section>
-
-    <!-- Botones principales -->
-    <section class="action-buttons">
-      <!-- Formulario de Confirmación -->
-    <section id="rsvp-section" class="detail-card">
-      <h2>Confirmar Asistencia</h2>
-      <form id="rsvp-form">
-        <div class="form-group">
-          <label for="nombre">Nombre Completo</label>
-          <input type="text" id="nombre" required>
-        </div>
-        <div class="form-group">
-          <label for="telefono">Número de Teléfono</label>
-          <input type="number" id="telefono" required>
-        </div>
-        <div class="form-group">
-          <label for="asistentes">Número de Asistentes</label>
-          <input type="number" id="asistentes" min="1" required>
-        </div>
-        <div class="form-group">
-          <label for="mensaje">Mensaje (opcional)</label>
-          <textarea id="mensaje"></textarea>
-        </div>
-        <button type="submit" class="gold-button">Confirmar Asistencia</button>
-      </form>
-      
-      <div id="qr-container" style="display:none;">
-        <h3>Tu código de confirmación</h3>
-        <div id="qr-code" class="qr-code-container"></div>
-        <button id="download-qr" class="gold-button">
-          <i class="fas fa-download"></i> Descargar QR
-        </button>
-      </div>
-    </section>
-
-
-      
-      <a href="gallery.html" class="gold-button outline">
-        <i class="fas fa-camera"></i> Ver Álbum
-      </a>
-    </section>
-
-    <!-- Footer con enlace secundario -->
-    <footer>
-      <p>¿Preguntas? <a href="https://wa.me/+525548943857" class="text-link">Contáctanos</a></p>
-    </footer>
+    </div>
   </div>
-  
-  <script src="js/app.local.js"></script>
-  <script src="js/app.js"></script>
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
-  <script src="js/confirmacion.js"></script>
-  
+</section>
+
+<footer>
+  Gracias por ser parte de nuestra historia.
+</footer>
+
+<footer>
+    <p>¿Preguntas? <a href="https://wa.me/+525548943857" class="text-link">Contáctanos</a></p>
+</footer>
+
+<!-- AUDIO -->
+<audio id="music" loop src="https://cdn.pixabay.com/audio/2023/03/02/audio_47c7e0ec79.mp3"></audio>
+<div class="audio-btn" id="audioBtn">🎵 Reproducir música</div>
+
+<script>
+/* Smooth scroll */
+document.querySelectorAll('[data-scroll-to]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const target=document.querySelector(btn.getAttribute('data-scroll-to'));
+    target && target.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+/* Reveal on scroll */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('inview');});
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
+
+/* Audio control */
+const audio=document.getElementById("music");
+const btn=document.getElementById("audioBtn");
+let playing=false;
+btn.addEventListener("click",async()=>{
+  try{
+    if(!playing){await audio.play(); btn.textContent="⏸ Pausar música"; playing=true;}
+    else{audio.pause(); btn.textContent="🎵 Reproducir música"; playing=false;}
+  }catch(e){alert("Tu navegador bloqueó el audio.");}
+});
+</script>
+    <script src="js/app.local.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

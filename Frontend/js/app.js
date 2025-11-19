@@ -3,6 +3,22 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
   IdentityPoolId: 'us-east-1:7e8675ae-dbc4-4685-8620-81f78ae7ac20'
 });
 
+/* STORYTELLING SCROLL REVEAL */
+const revealItems = document.querySelectorAll('.reveal-story');
+
+const ioStory = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('inview');
+    }
+  });
+},{
+  threshold:0.25
+});
+
+revealItems.forEach(el => ioStory.observe(el));
+
+
 async function fetchWeather() {
   try {
     // Fetch current weather and forecast (3 days)
@@ -178,6 +194,28 @@ function getWeatherIcon(weatherId, iconCode) {
   const iconKey = weatherId.toString()[0] === '5' ? '50' : iconCode.substring(0, 2);
   return icons[iconKey] || '🌤️';
 }
+
+/* ===========================
+   COUNTDOWN
+=========================== */
+
+const targetDate = new Date("Apr 18, 2026 16:00:00").getTime();
+
+setInterval(function(){
+  const now = new Date().getTime();
+  const diff = targetDate - now;
+
+  const d = Math.floor(diff / (1000*60*60*24));
+  const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const s = Math.floor((diff % (1000*60)) / 1000);
+
+  document.getElementById("dias").innerText = d;
+  document.getElementById("horas").innerText = h;
+  document.getElementById("minutos").innerText = m;
+  document.getElementById("segundos").innerText = s;
+}, 1000);
+
 
 document.addEventListener('DOMContentLoaded', function() {
   /* ===========Parallax=============*/

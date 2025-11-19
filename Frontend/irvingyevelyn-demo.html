@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Irving & Evelyn - Nuestra Boda</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@300;400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:'Inter',sans-serif;
+      background:#0d0d0d;
+      color:#f3f3f3;
+      overflow-x:hidden;
+    }
+    h1,h2,h3{
+      font-family:'Playfair Display',serif;
+      letter-spacing:1px;
+    }
+    .hero{
+      position:relative;
+      height:100vh;
+      width:100%;
+      overflow:hidden;
+    }
+    .hero video{
+      position:absolute;
+      top:0;left:0;
+      width:100%;height:100%;
+      object-fit:cover;
+      filter:brightness(0.55);
+      animation:slowZoom 25s ease-in-out infinite alternate;
+    }
+    @keyframes slowZoom{
+      from{transform:scale(1);}
+      to{transform:scale(1.15);}
+    }
+    .hero-content{
+      position:relative;
+      z-index:3;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:20px;
+    }
+    .hero h1{
+      font-size:4rem;
+      font-family:'Great Vibes',cursive;
+      color:#fff;
+      margin-bottom:10px;
+    }
+    .hero h2{
+      font-size:1.3rem;
+      opacity:0.85;
+    }
+    section{
+      padding:80px 20px;
+      max-width:900px;
+      margin:auto;
+      opacity:0;
+      transform:translateY(50px);
+      transition:all 0.9s ease-out;
+    }
+    section.visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+    .gallery{
+      display:grid;
+      gap:20px;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      margin-top:30px;
+    }
+    .gallery img{
+      width:100%;
+      border-radius:10px;
+      object-fit:cover;
+    }
+    .itinerary{
+      margin-top:30px;
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+    .itinerary-item{
+      background:#1a1a1a;
+      padding:20px;
+      border-radius:10px;
+      border:1px solid #333;
+    }
+    .itinerary-item h3{
+      color:#e0c074;
+      margin-bottom:5px;
+    }
+    footer{
+      text-align:center;
+      padding:50px 20px;
+      color:#aaa;
+      font-size:0.9rem;
+    }
+    .audio-btn{
+      position:fixed;
+      bottom:20px;
+      right:20px;
+      z-index:50;
+      background:#e0c074;
+      color:#111;
+      padding:12px 18px;
+      border-radius:30px;
+      cursor:pointer;
+      font-weight:bold;
+      box-shadow:0 4px 12px rgba(0,0,0,0.4);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="hero">
+  <video src="https://cdn.coverr.co/videos/coverr-wedding-bouquet-1100/1080p.mp4" autoplay loop muted></video>
+  <div class="hero-content">
+    <h1>Irving & Evelyn</h1>
+    <h2>Nos casamos — 14 · Octubre · 2026</h2>
+  </div>
+</div>
+
+<section id="historia">
+  <h2>Nuestra Historia</h2>
+  <p>
+    Hace cinco años comenzó una historia que jamás imaginamos que llegaría tan lejos.
+    Hemos crecido juntos, hemos reído, llorado, viajado, aprendido y creado un mundo que ahora queremos compartir con quienes más amamos.
+  </p>
+</section>
+
+<section id="galeria">
+  <h2>Galería</h2>
+  <div class="gallery">
+    <img src="https://images.unsplash.com/photo-1529634806980-26f5f60e3b1c?auto=format&fit=crop&w=900&q=80"/>
+    <img src="https://images.unsplash.com/photo-1520778533326-8c178a1a9b90?auto=format&fit=crop&w=900&q=80"/>
+    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80"/>
+  </div>
+</section>
+
+<section id="itinerario">
+  <h2>Itinerario del Día</h2>
+  <div class="itinerary">
+    <div class="itinerary-item">
+      <h3>3:00 PM — Ceremonia</h3>
+      <p>El momento más importante: uniremos nuestras vidas para siempre.</p>
+    </div>
+    <div class="itinerary-item">
+      <h3>4:30 PM — Sesión de Fotos</h3>
+      <p>Tómense fotos con nosotros y compartan este momento especial.</p>
+    </div>
+    <div class="itinerary-item">
+      <h3>5:00 PM — Recepción</h3>
+      <p>Comida, música y celebración junto a las personas más importantes.</p>
+    </div>
+    <div class="itinerary-item">
+      <h3>8:00 PM — Fiesta</h3>
+      <p>Baile, brindis y una noche para recordar siempre.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Con amor, Irving & Evelyn — Gracias por acompañarnos
+</footer>
+
+<audio id="music" loop src="https://cdn.pixabay.com/audio/2023/03/02/audio_47c7e0ec79.mp3"></audio>
+<div class="audio-btn" id="audioBtn">🎵 Reproducir música</div>
+
+<script>
+  const sections=document.querySelectorAll("section");
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible");});
+  },{threshold:0.3});
+  sections.forEach(sec=>obs.observe(sec));
+
+  const audio=document.getElementById("music");
+  const btn=document.getElementById("audioBtn");
+  let playing=false;
+
+  btn.addEventListener("click",async()=>{
+    try{
+      if(!playing){
+        await audio.play();
+        playing=true;
+        btn.textContent="⏸ Pausar música";
+      }else{
+        audio.pause();
+        playing=false;
+        btn.textContent="🎵 Reproducir música";
+      }
+    }catch(err){
+      alert("Tu navegador bloqueó la reproducción automática. Toca de nuevo.");
+    }
+  });
+</script>
+
+</body>
+</html>
