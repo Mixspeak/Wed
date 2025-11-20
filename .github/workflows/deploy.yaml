@@ -12,9 +12,9 @@ jobs:
     
     - name: Replace AWS credentials
       run: |
-        sed -i "s|__AWS_REGION__|${{ secrets.AWS_REGION }}|g" Frontend/app.js
-        sed -i "s|__AWS_ACCESS_KEY_ID__|${{ secrets.AWS_ACCESS_KEY_ID }}|g" Frontend/app.js
-        sed -i "s|__AWS_SECRET_ACCESS_KEY__|${{ secrets.AWS_SECRET_ACCESS_KEY }}|g" Frontend/app.js
-        sed -i "s|__AWS_REGION__|${{ secrets.AWS_REGION }}|g" Frontend/gallery.js
-        sed -i "s|__AWS_ACCESS_KEY_ID__|${{ secrets.AWS_ACCESS_KEY_ID }}|g" Frontend/gallery.js
-        sed -i "s|__AWS_SECRET_ACCESS_KEY__|${{ secrets.AWS_SECRET_ACCESS_KEY }}|g" Frontend/gallery.js
+        sed -i "s|__AWS_REGION__|${{ secrets.AWS_REGION }}|g" Frontend/js/app.js
+        sed -i "s|__AWS_ACCESS_KEY_ID__|${{ secrets.AWS_ACCESS_KEY_ID }}|g" Frontend/js/app.js
+        sed -i "s|__AWS_SECRET_ACCESS_KEY__|${{ secrets.AWS_SECRET_ACCESS_KEY }}|g" Frontend/js/app.js
+        sed -i "s|__AWS_REGION__|${{ secrets.AWS_REGION }}|g" Frontend/js/gallery.js
+        sed -i "s|__AWS_ACCESS_KEY_ID__|${{ secrets.AWS_ACCESS_KEY_ID }}|g" Frontend/js/gallery.js
+        sed -i "s|__AWS_SECRET_ACCESS_KEY__|${{ secrets.AWS_SECRET_ACCESS_KEY }}|g" Frontend/js/gallery.js
