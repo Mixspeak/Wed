@@ -671,9 +671,9 @@ footer {
 /* Calendar Download Section */
 .calendar-download {
   text-align: center;
-  padding: 25px;
+  /* padding: 25px; */
   margin: 30px 0;
-  background: #FFFFFF;
+  background: color(srgb 0.96 0.95 0.92 / 0.5);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
 }

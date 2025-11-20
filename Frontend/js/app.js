@@ -287,10 +287,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // Set wedding details here
   const weddingDetails = {
     title: "Boda de Irving y Evelyn",
-    description: "Celebración del matrimonio. ¡Esperamos verte allí!\n\nVestimenta: Formal\nDirección: Hotel Agua Blanca, Jungapeo, Michoacán",
-    location: "Hotel Agua Blanca, Jungapeo, Michoacán",
-    startTime: "20250516T160000", // Format: YYYYMMDDTHHMMSS
-    endTime: "20250516T230000",   // Adjust with your times
+    description: "Celebración del matrimonio. ¡Esperamos verte allí!\n\nVestimenta: Formal\nDirección: Salón San Francisco, Jungapeo, Michoacán",
+    location: "Salón San Francisco, Jungapeo, Michoacán",
+    startTime: "20260418T160000", // Format: YYYYMMDDTHHMMSS
+    endTime: "20260418T230000",   // Adjust with your times
     timezone: "America/Mexico_City",
     reminder: "-PT15M" // 15 minute reminder
   };
