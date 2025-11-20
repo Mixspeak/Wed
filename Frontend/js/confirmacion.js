@@ -13,7 +13,7 @@ const firebaseConfig = {
 // Inicializa Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-const auth = firebase.auth();
+//const auth = firebase.auth();
 const storage = firebase.storage(); 
 
 document.getElementById('rsvp-form').addEventListener('submit', async (e) => {
