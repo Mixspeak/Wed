@@ -3,7 +3,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyBCFzL31n1AZRIGV6Vax563BpW4_DIbLt0",
   authDomain: "wedapp-8e7df.firebaseapp.com",
   projectId: "wedapp-8e7df",
-  storageBucket: "wedapp-8e7df.appspot.com",
+  storageBucket: "wedapp-8e7df.firebasestorage.app",
   messagingSenderId: "416233320162",
   appId: "1:416233320162:web:d243a2c257f787be0c78bb",
   measurementId: "G-SRNCCGCSGH"
