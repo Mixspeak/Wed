@@ -20,6 +20,7 @@
   <!-- Android / Chrome -->
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="manifest" href="manifest.json">
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 
 </head>
 
@@ -285,6 +286,16 @@ const io=new IntersectionObserver((entries)=>{
 document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
 </script>
 
+/* OneSignal notification */
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "d59c0907-e7d2-4386-bea5-5e89261ce42a",
+      });
+    });
+  </script>
+  
   <script src="js/app.local.js"></script>
   <script src="js/app.js"></script>
   <!-- Firebase -->
