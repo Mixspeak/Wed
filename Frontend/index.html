@@ -1,6 +1,47 @@
 <!doctype html>
 <html lang="es">
 <head>
+  <!-- Auth gate: solicita contraseña antes de cargar -->
+  <script>
+  (async () => {
+    // REEMPLAZA este valor por el SHA-256 hex de tu contraseña elegida
+    const ALLOWED_HASH = "7e4d243ff1de6d4f911739f305644d04d06afc579763ebf950219722d27b79c8"; // ejemplo: "3d2e...f5a0"
+
+    // Helper: SHA-256 (retorna hex)
+    async function sha256Hex(text) {
+      const enc = new TextEncoder().encode(text);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', enc);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Si ya inició sesión en esta pestaña, permitir (sessionStorage)
+    if (sessionStorage.getItem('invitation_auth') === '1') return;
+
+    // Límite de intentos (evita loops)
+    const MAX_ATTEMPTS = 3;
+    for (let i = 0; i < MAX_ATTEMPTS; i++) {
+      // prompt sin cargar la página (aparece antes)
+      const pw = prompt('Introduce la contraseña para ver esta página:');
+      if (pw === null) { // usuario canceló
+        window.location.href = 'construccion.html';
+        return;
+      }
+      const h = await sha256Hex(pw);
+      if (h === ALLOWED_HASH) {
+        // Guardar en sessionStorage para no volver a pedir durante la sesión
+        sessionStorage.setItem('invitation_auth', '1');
+        return; // permite que la página continúe cargando
+      } else {
+        alert('Contraseña incorrecta. Intenta de nuevo.');
+      }
+    }
+
+    // Si se agotan intentos, redirigir
+    window.location.href = 'construccion.html';
+  })();
+  </script>
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Irving & Evelyn — Invitación</title>
