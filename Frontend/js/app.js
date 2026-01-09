@@ -199,7 +199,7 @@ function getWeatherIcon(weatherId, iconCode) {
    COUNTDOWN
 =========================== */
 
-const targetDate = new Date("Apr 18, 2026 16:00:00").getTime();
+const targetDate = new Date("Apr 25, 2026 15:00:00").getTime();
 
 setInterval(function(){
   const now = new Date().getTime();
@@ -289,8 +289,8 @@ document.addEventListener('DOMContentLoaded', function() {
     title: "Boda de Irving y Evelyn",
     description: "Celebración del matrimonio. ¡Esperamos verte allí!\n\nVestimenta: Formal\nDirección: Salón San Francisco, Jungapeo, Michoacán",
     location: "Salón San Francisco, Jungapeo, Michoacán",
-    startTime: "20260418T160000", // Format: YYYYMMDDTHHMMSS
-    endTime: "20260418T230000",   // Adjust with your times
+    startTime: "20260425T150000", // Format: YYYYMMDDTHHMMSS
+    endTime: "20260425T230000",   // Adjust with your times
     timezone: "America/Mexico_City",
     reminder: "-PT15M" // 15 minute reminder
   };
@@ -351,7 +351,52 @@ function formatDateForICS(date) {
     .replace('T', '');
 }
 
+// ******************************************
+// Animation of the envelope opening
+// ******************************************
+document.addEventListener("DOMContentLoaded", () => {
+    const envelope = document.getElementById('myEnvelope');
+    
+    if (!envelope) {
+        console.error('Envelope element not found');
+        return;
+    }
+    
+    let hasOpened = false;
 
+    function openEnvelope() {
+        if (!hasOpened) {
+            console.log('Opening envelope...');
+            envelope.classList.add('is-open');
+            hasOpened = true;
+        }
+    }
+
+    // OPCIÓN A: Abrir por tiempo (ej. 2.5 segundos después de cargar)
+    setTimeout(openEnvelope, 2500);
+
+    // OPCIÓN B: Abrir al hacer scroll (Intersection Observer)
+    // Esto detecta cuando el sobre entra en la pantalla del usuario
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Pequeño retraso al hacer scroll para que se aprecie la animación
+                    setTimeout(openEnvelope, 500); 
+                    observer.unobserve(entry.target); // Dejar de observar una vez abierto
+                }
+            });
+        }, { threshold: 0.5 }); // Se activa cuando el 50% del sobre es visible
+
+        const triggerArea = document.querySelector('.trigger-area');
+        if (triggerArea) {
+            observer.observe(triggerArea);
+        }
+    }
+
+    // OPCIÓN C: Click manual por si acaso
+    envelope.addEventListener('click', openEnvelope);
+});
 
   // ******************************************
   // Sprites

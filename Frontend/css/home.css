@@ -53,6 +53,171 @@
     /* ==========================================================
        HERO (SECCIÓN #home) — SOBRE DE CARTA COMO FONDO
     ========================================================== */
+    /* --- VARIABLES GLOBALES --- */
+        :root {
+          --verde-olivo: transparent; /* Ya no usas color solido */
+          --img-sobre-cuerpo: url('../images/sobre-cuerpo.png');
+          --img-sobre-solapa: url('../images/sobre-solapa.png');
+          --img-sello: url('../images/sello-lacre.png');
+          --img-papel: url('../images/papel.png');
+          --beige-papel: #faf7f2;
+          --dorado: #b59b72;
+          --verde-oscuro: #4b463f;
+          /* etc... */
+        }
+
+        /* Contenedor principal para centrar y activar el scroll */
+        .trigger-area {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            z-index: 5;
+        }
+        .scroll-instruction { 
+            margin-bottom: 40px; 
+            color: #666; 
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* --- EL CONTENEDOR DEL SOBRE --- */
+        .envelope-stage {
+            position: relative;
+            width: 500px;  /* Ancho del sobre */
+            height: 350px; /* Alto del sobre cerrado */
+            perspective: 1500px; /* CRUCIAL: Da el efecto 3D para que la solapa se abra realistamente */
+            cursor: pointer;
+        }
+
+        /* Clase común para todas las capas */
+        .layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* Curva de animación suave */
+        }
+
+        /* --- CAPA 1: EL CUERPO DEL SOBRE (Fondo y bolsillo) --- */
+        .layer-body {
+            z-index: 10;
+            background-image: var(--img-sobre-cuerpo);
+            background-size: auto;
+            background-position: center;
+        }
+
+        /* --- CAPA 2: LA CARTA (El papel interior) --- */
+        .layer-letter {
+            opacity: 0;
+            z-index: 5; /* Empieza dentro del sobre */
+            width: 80%; /* Carta un poco más pequeña que el sobre */
+            top: 15%;
+            left: 10%;
+            background-image: var(--img-papel);
+            background-size: cover;
+            background-position: center;
+            background-color: var(--beige-papel); /* Fallback color */
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            padding: 30px;
+            box-sizing: border-box;
+            text-align: center;
+            color: var(--verde-oscuro);
+            overflow: hidden;
+
+            /* Estado inicial: Escondida un poco más abajo */
+            transform: translateY(30px);
+        }
+        
+        /* Estilos del texto de la carta */
+        .letter-content h1 {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 2.5rem;
+            margin: 0; color: var(--dorado);
+        }
+        .letter-content p { margin: 10px 0; font-size: 1rem; }
+        .letter-content .details { margin-top: 20px; font-weight: bold; }
+        .letter-content small { display: block; margin-top: 20px; color: var(--dorado); }
+
+
+        /* --- CAPA 3: LA SOLAPA MÓVIL (El triángulo de arriba) --- */
+        .layer-flap {
+            z-index: 20; /* Encima de todo al principio */
+            height: 100%; /* La solapa suele ser la mitad de la altura */
+            background-image: var(--img-sobre-solapa);
+            background-size: auto;
+            background-position: center;
+            transform-origin: top; /* Gira desde el borde superior */
+        }
+
+        /* --- CAPA 4: EL SELLO DE LACRE --- */
+        .layer-seal {
+            z-index: 30;
+            width: 90px;
+            height: 90px;
+            top: 35%; /* Posición ajustada a la punta de la solapa */
+            left: calc(50% - 45px);
+            
+            background-image: var(--img-sello);
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* =========================================
+           ESTADOS DE ANIMACIÓN (Cuando se abre)
+        ========================================= */
+        .envelope-stage.is-open .layer-flap {
+            /* Gira 180 grados hacia arriba */
+            transform: rotateX(180deg);
+            /* Importante: bajamos el z-index para que al abrirse quede "detrás" de la carta que sale */
+            z-index: 1;
+            transition-duration: 1s;
+        }
+
+        .envelope-stage.is-open .layer-seal {
+            /* El sello desaparece suavemente */
+            opacity: 0;
+            transform: scale(0.5) translateY(-50px);
+            pointer-events: none;
+        }
+
+        .envelope-stage.is-open .layer-letter {
+            /* La carta sube y se coloca por delante del cuerpo del sobre */
+            z-index: 15;
+            opacity: 100;
+            transform: translateY(-160px); /* Ajusta este valor para que salga más o menos */
+            transition-delay: 0.5s; /* Espera un poco a que la solapa se abra */
+            transition-duration: 2.0s;
+        }
+
+        /* Responsivo para tabletas (iPad, tablets medianas) */
+        @media (max-width: 1800px) and (min-width: 601px) {
+            .envelope-stage.is-open .layer-flap {top: 15%;}
+            .envelope-stage { width: 420px; height: 300px; }
+            .layer-seal { width: 80px; height: 80px; top: 32%; left: calc(50% - 40px); }
+            .letter-content h1 { font-size: 2.2rem; }
+            .letter-content p { font-size: 0.95rem; }
+            .scroll-instruction { font-size: 13px; }
+            .envelope-stage.is-open .layer-letter { transform: translateY(-210px); opacity: 100; }
+        }
+
+        /* Responsivo para móviles pequeños */
+        @media (max-width: 600px) {
+            .envelope-stage { width: 320px; height: 220px; }
+            .layer-seal { width: 70px; height: 70px; top: 30%; left: calc(50% - 35px); }
+            .letter-content h1 { font-size: 1.8rem; }
+            .letter-content p { font-size: 0.8rem; }
+            .envelope-stage.is-open .layer-letter { transform: translateY(-210px); opacity: 100; }
+        }
+        
     .hero{
       height:100vh;
       min-height:680px;
@@ -147,126 +312,8 @@
     padding:40px 20px;
     background:var(--bg);
     position:relative;
+    overflow: hidden;
     }
-
-    /* El sobre en sí */
-    .envelope{
-    position:relative;
-    width:420px;
-    height:300px;
-    perspective:900px;
-    background: url(../images/envelope.png);
-    background-position: center;
-    background-size: auto;
-    }
-
-    /* Cuerpo del sobre */
-    .envelope-body{
-    width:100%;
-    height:100%;
-    background:#dce8dd; /* verde pastel muy suave */
-    border-radius:8px;
-    position:absolute;
-    top:0; left:0;
-    border:2px solid #c6d6c8;
-    }
-
-    /* Solapa superior del sobre */
-    .envelope-flap{
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:50%;
-    background:#dce8dd;  /* verde pastel */
-    border-radius:8px 8px 0 0;
-    border:2px solid #c6d6c8;
-    border-bottom:none;
-
-    transform-origin:top;
-    transform:rotateX(0deg);
-    transition:transform 1.2s ease;
-    z-index:10;
-    }
-
-    /* Animación opcional: abre el sobre cuando entra a pantalla */
-    .envelope-wrapper:hover .envelope-flap{
-    transform:rotateX(-125deg);
-    }
-
-    /* Sello dorado circular */
-    .seal{
-    width:76px;
-    height:76px;
-    background:radial-gradient(circle, #f7e5a3 0%, #d3b974 60%, #b79f63 100%);
-    border-radius:50%;
-    position:absolute;
-    top:105px;
-    left:50%;
-    transform:translateX(-50%);
-    z-index:1;
-    box-shadow:
-        0 0 6px rgba(0,0,0,0.2),
-        inset 0 0 4px rgba(255,255,255,0.8);
-    border:3px solid #b49b63;
-    }
-
-    /* Textura o pequeño diseño opcional del sello */
-    .seal::after{
-    content:"IE";
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:'Playfair Display', serif;
-    font-weight:700;
-    font-size:22px;
-    color:#7d673c;
-    }
-
-    /* Contenido dentro del sobre */
-    .envelope-content{
-    position:absolute;
-    inset:0;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    padding:30px 20px;
-    text-align:center;
-    z-index:5;
-    background: rgb(246 242 235 / 15%);
-    }
-
-    .envelope-content .date{
-    font-size:14px;
-    letter-spacing:2px;
-    color:#7a7a7a;
-    margin-bottom:12px;
-    }
-
-    .envelope-content .title{
-    font-family: 'Great Vibes', cursive;
-    font-size: 45px;
-    color: #6b533b;
-    margin-bottom: 50%;
-    }
-
-    .envelope-content .subtitle{
-    font-family:'Playfair Display',serif;
-    font-size:18px;
-    margin-bottom:22px;
-    color:#4c4c4c;
-    }
-
-    .envelope-content .cta-row{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    justify-content:center;
-    }
-
 
     section.story{
       padding:30px 0;
